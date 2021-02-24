@@ -6,14 +6,6 @@ nmap <Space>h :noh<CR>
 vnoremap < <gv
 vnoremap > >gv
 
-if exists('g:vscode')
-
-" Simulate same TAB behavior in VSCode
-nmap <Tab> :Tabnext<CR>
-nmap <S-Tab> :Tabprev<CR>
-
-else
-
 " I hate escape more than anything else
 inoremap jk <Esc>
 inoremap kj <Esc>
@@ -25,11 +17,11 @@ inoremap <c-9> <ESC>vi(c
 nnoremap <c-9> vi(c
 inoremap <c-]> <ESC>vi[c
 nnoremap <c-]> vi[c
- 
+
 " TAB in general mode will move to text buffer
 nnoremap <silent> <TAB> :bnext<CR>
 " SHIFT-TAB will go back
-nnoremap <silent> <S-TAB> :bprevious<CR> 
+nnoremap <silent> <S-TAB> :bprevious<CR>
 " Move selected line / block of text in visual mode
 " shift + k to move up
 " shift + j to move down
@@ -71,8 +63,6 @@ if get(g:, 'elite_mode')
 	nnoremap <C-Down>  :resize +2<CR>
 	nnoremap <C-Left>  :vertical resize -2<CR>
 	nnoremap <C-Right> :vertical resize +2<CR>
-endif
-
 endif
 
 nnoremap <silent> <leader>rs :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
