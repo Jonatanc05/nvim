@@ -1,11 +1,11 @@
 call plug#begin('~/vimfiles/autoload')
 " Colorschemes
 Plug 'embark-theme/vim'
+Plug 'Badacadabra/vim-archery'
 
 " Arvore de arquivos
 Plug 'scrooloose/NERDTree'
-" 
-" Plug 'davidhalter/jedi-vim'
+
 " Auto complete
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " Syntax highlight
