@@ -66,3 +66,4 @@ if get(g:, 'elite_mode')
 endif
 
 nnoremap <silent> <leader>rs :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
+map <leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
