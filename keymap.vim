@@ -9,6 +9,8 @@ vnoremap > >gv
 " I hate escape more than anything else
 inoremap jk <Esc>
 inoremap kj <Esc>
+vnoremap jk <Esc>
+vnoremap kj <Esc>
 
 " Extending change (c) shortcut
 inoremap <c-g> <ESC>viwc
