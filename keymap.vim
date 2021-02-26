@@ -62,3 +62,7 @@ nnoremap <silent> <leader>rs :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar
 
 " Allow to delete current buffer without closing window
 map <leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
+
+" Use ç/Ç to search ahead/behind
+nnoremap ç /
+nnoremap Ç ?
