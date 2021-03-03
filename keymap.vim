@@ -66,3 +66,6 @@ map <leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
 " Use ç/Ç to search ahead/behind
 nnoremap ç /
 nnoremap Ç ?
+
+" Use <leader>j to repeat action (standard is ';')
+nnoremap <leader>j ;
