@@ -1,5 +1,8 @@
+" I use spacebar as my leader key
 let mapleader=" "
-" nnoremap <Space> <Nop>
+
+" Set <leader>h to remove any highlights (e. g. search highlight)
+" Won't remove end of line highlights
 nmap <Space>h :noh<CR>
 
 " Better indenting
