@@ -72,3 +72,4 @@ nnoremap Ç ?
 
 " Use <leader>j to repeat action (standard is ';')
 nnoremap <leader>j ;
+vnoremap <leader>j ;
