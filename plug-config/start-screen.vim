@@ -63,3 +63,6 @@ let g:startify_session_delete_buffers = 1
 let g:startify_fortune_use_unicode = 1
 let g:startify_session_persistence = 1
 " let g:startify_enable_special = 0
+
+" Use CTRL + s to open startify screen
+nnoremap <C-s> :Startify
