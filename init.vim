@@ -48,3 +48,7 @@ au BufWinEnter * match ExtraWhitespace /\s\+$/
 au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 au InsertLeave * match ExtraWhitespace /\s\+$/
 au BufWinLeave * call clearmatches()
+
+" Save and load folds automatically
+au BufWinLeave ?* mkview
+" au BufWinEnter ?* silent loadview
