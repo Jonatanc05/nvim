@@ -65,4 +65,4 @@ let g:startify_session_persistence = 1
 " let g:startify_enable_special = 0
 
 " Use CTRL + s to open startify screen
-nnoremap <C-s> :Startify
+nnoremap <C-s> :Startify<CR>
