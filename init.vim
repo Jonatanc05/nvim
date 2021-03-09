@@ -51,4 +51,3 @@ au BufWinLeave * call clearmatches()
 
 " Save and load folds automatically
 au BufWinLeave ?* mkview
-" au BufWinEnter ?* silent loadview
