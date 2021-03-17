@@ -49,5 +49,10 @@ au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 au InsertLeave * match ExtraWhitespace /\s\+$/
 au BufWinLeave * call clearmatches()
 
+" Use matchit plugin to fold #region statements
+packadd! matchit
+au BufWinEnter * let b:match_words = '\s*#\s*region.*$:\s*#\s*endregion'
+
 " Save and load folds automatically
 au BufWinLeave ?* mkview
+
