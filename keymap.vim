@@ -76,3 +76,6 @@ vnoremap <leader>j ;
 
 " Use <leader>z to load folds
 nnoremap <leader>z :loadview<CR>
+
+" Use shift + enter to close brackets and continue typing (gvim only)
+inoremap <S-CR> <CR>}<Esc>O
