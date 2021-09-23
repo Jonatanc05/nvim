@@ -1,7 +1,6 @@
 call plug#begin('~/vimfiles/autoload')
 " Colorschemes
 Plug 'embark-theme/vim'
-Plug 'Badacadabra/vim-archery'
 
 " Arvore de arquivos
 Plug 'scrooloose/NERDTree'
