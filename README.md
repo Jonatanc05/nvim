@@ -3,7 +3,7 @@
 ## Linux
 
 - Mova o conteúdo deste repositório para ~/.config/nvim/
-- Execute `sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim` no PowerShell
+- Execute `sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim`
 - Execute `PlugInstall` no Neovim
 
 ## Windows
