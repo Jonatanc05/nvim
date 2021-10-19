@@ -82,3 +82,6 @@ inoremap <S-CR> <CR>}<Esc>O
 
 " Use <leader>p to paste but keep register content
 vnoremap <leader>p "_dP
+
+" Use CTRL + Backspace to erase word on insert mode
+inoremap <C-BS> <esc>dbxa
