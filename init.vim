@@ -5,7 +5,6 @@ source $HOME/AppData/Local/nvim/plug-config/omnisharp.vim
 source $HOME/AppData/Local/nvim/plug-config/start-screen.vim
 source $HOME/AppData/Local/nvim/plug-config/fswitch.vim
 
-set iskeyword+=-                      	" treat dash separated words as a word text object"
 set formatoptions-=cro                  " Stop newline continution of comments
 set nocompatible
 colorscheme embark
