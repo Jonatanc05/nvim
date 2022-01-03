@@ -1,7 +1,5 @@
 source $HOME/AppData/Local/nvim/keymap.vim
-source $HOME/AppData/Local/nvim/vim-plug/plugins.vim
-source $HOME/AppData/Local/nvim/plug-config/coc.vim
-source $HOME/AppData/Local/nvim/plug-config/omnisharp.vim
+source $HOME/AppData/Local/nvim/plugins.vim
 source $HOME/AppData/Local/nvim/plug-config/start-screen.vim
 source $HOME/AppData/Local/nvim/plug-config/fswitch.vim
 
@@ -51,7 +49,4 @@ au BufWinLeave * call clearmatches()
 " Use matchit plugin to fold #region statements
 packadd! matchit
 au BufWinEnter * let b:match_words = '\s*#\s*region.*$:\s*#\s*endregion'
-
-" Save and load folds automatically
-au BufWinLeave ?* mkview
 
