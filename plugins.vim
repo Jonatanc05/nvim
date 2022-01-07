@@ -12,6 +12,8 @@ Plug 'airblade/vim-rooter'
 " Snippets
 Plug 'SirVer/ultisnips'
 let g:UltiSnipsExpandTrigger="<tab>"
+" let g:UltiSnipsJumpForwardTrigger="<c-b>"
+" let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 let g:UltiSnipsSnippetDirectories=[$MYVIMDIR.'/ulti-snippets']
 let g:UltiSnipsEditSplit='vertical'
 

@@ -41,7 +41,7 @@ nnoremap <silent> <C-s> :w<CR>
 nnoremap <silent> <C-q> :q<CR>
 nnoremap <silent> <C-Q> :q!<CR>
 " <TAB>: completion.
-inoremap <silent> <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+" inoremap <silent> <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " Better window navigation
 nnoremap <C-h> <C-w>h
@@ -70,18 +70,18 @@ map <leader>q :bp<bar>sp<bar>bn<bar>bd!<CR>
 nnoremap ç /
 nnoremap Ç ?
 
-" Use <leader>j to repeat action (standard is ';')
-nnoremap <leader>j ;
-vnoremap <leader>j ;
-
-" Use <leader>z to load folds
-nnoremap <leader>z :loadview<CR>
-
 " Use shift + enter to close brackets and continue typing (gvim only)
 inoremap <S-CR> <CR>}<Esc>O
 
-" Use <leader>p to paste but keep register content
-vnoremap <leader>p "_dP
+" Windows shortcuts to use windows clipboard
+nnoremap ' "+
+xnoremap <C-c> "+y
+xnoremap <C-x> "+d
+xnoremap <C-v> "+p
+
+" Use <C-p> to paste but keep register content
+vnoremap <C-p> "_dP
 
 " Use CTRL + Backspace to erase word on insert mode
-inoremap <C-BS> <esc>dbxa
+inoremap <C-BS> <esc>viwc
+inoremap <C-S-BS> <esc>viWc

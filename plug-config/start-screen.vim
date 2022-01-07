@@ -56,7 +56,7 @@ let g:startify_bookmarks = [
 	\ { 'i': '~/AppData/Local/nvim/init.vim' },
 	\ { 's': '~/AppData/Local/nvim/plug-config/start-screen.vim' },
 	\ { 'k': '~/AppData/Local/nvim/keymap.vim' },
-	\ { 'p': '~/AppData/Local/nvim/vim-plug/plugins.vim' },
+	\ { 'p': '~/AppData/Local/nvim/plugins.vim' },
 \ ]
 
 let g:startify_session_delete_buffers = 1
