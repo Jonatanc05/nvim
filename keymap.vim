@@ -89,3 +89,7 @@ inoremap <C-S-BS> <esc>viWc
 " Reproduce arbitrary sequence of keys {count} times
 nnoremap <silent> [ :<C-U>let b:recording_count = v:count1<CR>qa
 nnoremap <expr> ] 'q' . (b:recording_count > 1 ? (b:recording_count - 1).'@a' : '')
+
+" Split with Return in normal mode
+nnoremap <CR> :vsp<CR>
+nnoremap <S-CR> :sp<CR>
