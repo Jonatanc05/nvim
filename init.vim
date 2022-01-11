@@ -1,7 +1,8 @@
-source $HOME/AppData/Local/nvim/keymap.vim
-source $HOME/AppData/Local/nvim/plugins.vim
-source $HOME/AppData/Local/nvim/plug-config/start-screen.vim
-source $HOME/AppData/Local/nvim/plug-config/fswitch.vim
+source $MYVIMDIR/keymap.vim
+source $MYVIMDIR/plugins.vim
+source $MYVIMDIR/plug-config/start-screen.vim
+source $MYVIMDIR/plug-config/fswitch.vim
+source $MYVIMDIR/plug-config/signify.vim
 
 set formatoptions-=cro                  " Stop newline continution of comments
 set nocompatible
