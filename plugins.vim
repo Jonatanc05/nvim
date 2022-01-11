@@ -9,6 +9,11 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf'
 Plug 'airblade/vim-rooter'
 
+" Git
+Plug 'mhinz/vim-signify'		" Show signs in lines
+Plug 'tpope/vim-fugitive'		" :Git commands
+Plug 'tpope/vim-rhubarb'		" :GBrowser to github
+
 " Snippets
 Plug 'SirVer/ultisnips'
 let g:UltiSnipsExpandTrigger="<tab>"
