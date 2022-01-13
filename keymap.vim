@@ -93,3 +93,6 @@ nnoremap <expr> ] 'q' . (b:recording_count > 1 ? (b:recording_count - 1).'@a' : 
 " Split with Return in normal mode
 nnoremap <CR> :vsp<CR>
 nnoremap <S-CR> :sp<CR>
+
+" Search for file
+nnoremap <leader>f :FZF<CR>
