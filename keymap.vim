@@ -17,9 +17,6 @@ vnoremap kj <Esc>
 tnoremap jk <Esc>
 tnoremap kj <Esc>
 
-" Set CTRL+g to replace word
-inoremap <c-g> <ESC>viwc
-nnoremap <c-g> viwc
 " Set CTRL+9 to replace parentesis inner content
 inoremap <c-9> <ESC>vi(c
 nnoremap <c-9> vi(c
