@@ -35,7 +35,7 @@ set nowritebackup                       " This is recommended by coc
 set shortmess+=c                        " Don't pass messages to |ins-completion-menu|.
 set signcolumn=yes                      " Always show the signcolumn, otherwise it would shift the text each time
 set updatetime=300                      " Faster completion
-set timeoutlen=500                      " By default timeoutlen is 1000 ms
+set timeoutlen=320                      " By default timeoutlen is 1000 ms
 " set clipboard=unnamedplus               " Copy paste between vim and everything else
 set incsearch
 " set guifont=JetBrainsMono\ Nerd\ Font
