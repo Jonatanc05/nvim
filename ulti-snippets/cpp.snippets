@@ -14,3 +14,25 @@ endsnippet
 snippet inc "Include with <>"
 #include <$1>
 endsnippet
+
+snippet cc "Algorithmic problems code"
+#include <bits/stdc++.h>
+
+using namespace std;
+
+void solve() {
+	$1
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+
+	int t;
+	cin >> t;
+	for (int i = 1; i <= t; ++i) {
+		solve();
+	}
+	return 0;
+}
+endsnippet
