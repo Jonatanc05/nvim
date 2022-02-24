@@ -1,4 +1,5 @@
 " Startify
+let g:startify_custom_header = startify#fortune#boxed()
 let g:startify_lists = [
 	\ { 'type': 'sessions',  'header': ['	Sessoes Salvas'] },
 	\ { 'type': 'files', 	 'header': ['	Arquivos Recentes'] },
