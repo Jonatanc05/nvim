@@ -7,7 +7,7 @@ set nowrap                              " Display long lines as just one line
 set encoding=utf-8                      " The encoding displayed
 set pumheight=10                        " Makes popup menu smaller
 set fileencoding=utf-8                  " The encoding written to file
-set ruler              			            " Show the cursor position all the time
+set ruler                               " Show the cursor position all the time
 set cmdheight=2                         " More space for displaying messages
 set mouse=a                             " Enable your mouse
 set splitbelow                          " Horizontal splits will automatically be below
@@ -39,10 +39,16 @@ highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
 au BufWinEnter * match ExtraWhitespace /\s\+$/
 au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-au InsertEnter * set timeoutlen=170
 au InsertLeave * match ExtraWhitespace /\s\+$/
-au InsertLeave * set timeoutlen=1000
 au BufWinLeave * call clearmatches()
+
+" Configure timoutlen for jk in non-normal modes
+au InsertEnter * set timeoutlen=170
+au InsertLeave * set timeoutlen=1000
+nnoremap <silent> <script> v :set timeoutlen=100<CR>v
+nnoremap <silent> <script> V :set timeoutlen=100<CR>V
+nnoremap <silent> <script> <C-v> :set timeoutlen=100<CR><C-v>
+nnoremap <silent> <C-g> :set timeoutlen=1000<CR>
 
 " Use matchit plugin to fold #region statements
 packadd! matchit
