@@ -104,7 +104,7 @@ vim.cmd('source ' .. init_path .. '/plug-config.vim')
 vim.cmd([[
 let g:startify_bookmarks = [
 	\ { 'i': ']] .. init_path .. [[/init.lua' },
-	\ { 'k': ']] .. init_path .. [[/keymap.vim' },
+	\ { 'o': ']] .. init_path .. [[/old-init.vim' },
 	\ { 'p': ']] .. init_path .. [[/plug-config.vim' },
 \ ]
 ]])
