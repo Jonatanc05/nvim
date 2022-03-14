@@ -2,10 +2,14 @@
 
 ### Linux
 
-- Mova o conteúdo deste repositório para `~/.config/nvim/`
+- Execute:
+```
+cd ~/.config/
+git clone https://github.com/Jonatanc05/nvim.git
+```
 - Execute `:PackerInstall` no Neovim
 
 ### Windows
 
-- Mova o conteúdo deste repositório para `~/AppData/Local/nvim/`
+- Clone esse repositório em `~/AppData/Local/nvim/`
 - Execute `:PackerInstall` no Neovim
