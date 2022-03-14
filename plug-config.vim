@@ -5,11 +5,6 @@ let g:startify_lists = [
 	\ { 'type': 'files', 	 'header': ['	Arquivos Recentes'] },
 	\ { 'type': 'bookmarks', 'header': ['	Bookmarks'] }
 \ ]
-let g:startify_bookmarks = [
-	\ { 'i': '~/AppData/Local/nvim/init.lua' },
-	\ { 'k': '~/AppData/Local/nvim/keymap.vim' },
-	\ { 'p': '~/AppData/Local/nvim/plug-config.vim' },
-\ ]
 let g:startify_session_delete_buffers = 1
 let g:startify_fortune_use_unicode = 1
 let g:startify_session_persistence = 1

@@ -32,13 +32,85 @@ require('packer').startup(function(use)
 end)
 
 
+
+
+
+
+-------------- General --------------
+
+vim.opt.number       = true
+vim.opt.hidden       = true
+vim.opt.wrap         = false
+vim.opt.tabstop      = 4
+vim.opt.cursorline   = true
+vim.opt.incsearch    = true
+vim.opt.showcmd      = true
+vim.opt.encoding     = "utf-8"
+vim.opt.fileencoding = "utf-8"
+vim.opt.cmdheight    = 2
+vim.opt.mouse        = "a"
+vim.opt.splitbelow   = true
+vim.opt.splitright   = true
+vim.opt.compatible   = false
+
+
+
+
+
+
+-------------- Key Maps -------------
+
+vim.g.mapleader = " "
+
+vim.api.nvim_set_keymap("n", "<leader>q", ":bp<bar>sp<bar>bn<bar>bd<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>f", ":FZF<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>h", ":noh<CR>", {})
+vim.api.nvim_set_keymap("v", "<",         "<gv", {})
+vim.api.nvim_set_keymap("v", ">",         ">gv", {})
+vim.api.nvim_set_keymap("i", "jk",        "<Esc>", {})
+vim.api.nvim_set_keymap("i", "kj",        "<Esc>", {})
+vim.api.nvim_set_keymap("v", "jk",        "<Esc>", {})
+vim.api.nvim_set_keymap("v", "kj",        "<Esc>", {})
+vim.api.nvim_set_keymap("t", "jk",        "<Esc>", {})
+vim.api.nvim_set_keymap("t", "kj",        "<Esc>", {})
+vim.api.nvim_set_keymap("n", "<TAB>",     ":bnext<CR>", {})
+vim.api.nvim_set_keymap("n", "<S-TAB>",   ":bprevious<CR>", {})
+vim.api.nvim_set_keymap("x", "K :move",   "'<-2<CR>gv-gv", {})
+vim.api.nvim_set_keymap("x", "J :move",   "'>+1<CR>gv-gv", {})
+vim.api.nvim_set_keymap("n", "<C-k>",     ":resize -2<CR>", {})
+vim.api.nvim_set_keymap("n", "<C-j>",     ":resize +2<CR>", {})
+vim.api.nvim_set_keymap("n", "<C-h>",     ":vertical resize -2<CR>", {})
+vim.api.nvim_set_keymap("n", "<C-l>",     ":vertical resize +2<CR>", {})
+vim.api.nvim_set_keymap("n", "ç",         "/", {})
+vim.api.nvim_set_keymap("n", "Ç",         "?", {})
+vim.api.nvim_set_keymap("i", "<S-CR>",    "<CR>}<Esc>O", {})
+vim.api.nvim_set_keymap("x", "<C-c>",     '"+y', {})
+vim.api.nvim_set_keymap("x", "<C-x>",     '"+d', {})
+vim.api.nvim_set_keymap("x", "<C-v>",     '"+p', {})
+vim.api.nvim_set_keymap("v", "<C-p>",     '"_dP', {})
+vim.api.nvim_set_keymap("i", "<C-BS>",    "<C-W>", {})
+
+
+
+
+
+
 ------------ Legacy stuff -----------
 
 local init_path = vim.fn.stdpath('config')
 
 vim.cmd('source ' .. init_path .. '/old-init.vim')
-vim.cmd('source ' .. init_path .. '/keymap.vim')
 vim.cmd('source ' .. init_path .. '/plug-config.vim')
+vim.cmd([[
+let g:startify_bookmarks = [
+	\ { 'i': ']] .. init_path .. [[/init.lua' },
+	\ { 'k': ']] .. init_path .. [[/keymap.vim' },
+	\ { 'p': ']] .. init_path .. [[/plug-config.vim' },
+\ ]
+]])
+
+
+
 
 
 ------- Setup builtin LSPs -----------
