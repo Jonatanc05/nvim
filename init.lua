@@ -16,7 +16,8 @@ vim.cmd([[
 require('packer').startup(function(use)
 	use 'mhinz/vim-startify'                          -- Initial screen
 	use 'derekwyatt/vim-fswitch'                      -- Switch header-source file (c++)
-	use 'embark-theme/vim'                            -- Colorscheme
+--	use 'embark-theme/vim'                            -- Colorscheme
+	use 'dikiaap/minimalist'
 	use 'junegunn/fzf.vim'                            -- FZF
 	use 'junegunn/fzf'                                -- FZF
 	use 'airblade/vim-rooter'                         -- Find root directory of project
@@ -38,10 +39,13 @@ end)
 
 -------------- General --------------
 
+vim.cmd 'colorscheme   minimalist'
 vim.opt.number       = true
 vim.opt.hidden       = true
 vim.opt.wrap         = false
+vim.opt.smartindent  = true
 vim.opt.tabstop      = 4
+vim.opt.shiftwidth   = 4
 vim.opt.cursorline   = true
 vim.opt.incsearch    = true
 vim.opt.showcmd      = true
@@ -71,8 +75,8 @@ vim.api.nvim_set_keymap("i", "jk",        "<Esc>", {})
 vim.api.nvim_set_keymap("i", "kj",        "<Esc>", {})
 vim.api.nvim_set_keymap("v", "jk",        "<Esc>", {})
 vim.api.nvim_set_keymap("v", "kj",        "<Esc>", {})
-vim.api.nvim_set_keymap("t", "jk",        "<Esc>", {})
-vim.api.nvim_set_keymap("t", "kj",        "<Esc>", {})
+vim.api.nvim_set_keymap("t", "jk",        "<C-\\><C-n>", {})
+vim.api.nvim_set_keymap("t", "kj",        "<C-\\><C-n>", {})
 vim.api.nvim_set_keymap("n", "<TAB>",     ":bnext<CR>", {})
 vim.api.nvim_set_keymap("n", "<S-TAB>",   ":bprevious<CR>", {})
 vim.api.nvim_set_keymap("x", "K :move",   "'<-2<CR>gv-gv", {})
