@@ -1,3 +1,4 @@
+windows = jit and jit.os == 'Windows'
 ------- Install packer and plugins -------
 
 local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
@@ -113,6 +114,29 @@ let g:startify_bookmarks = [
 \ ]
 ]])
 
+
+
+
+
+-------------- Treesitter --------------
+
+if windows then
+	require 'nvim-treesitter.install'.compilers = { "clang" }
+end
+
+local configs = require'nvim-treesitter.configs'
+configs.setup {
+	ensure_installed = "maintained", -- Only use parsers that are maintained
+	highlight = { -- enable highlighting
+	  enable = true,
+	},
+	indent = {
+	  enable = false,
+	}
+}
+
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 
 
