@@ -28,6 +28,7 @@ require('packer').startup(function(use)
 	use 'nvim-treesitter/nvim-treesitter'             -- Highlight, edit, and navigate code using a fast incremental parsing library
 --	use 'nvim-treesitter/nvim-treesitter-textobjects' -- Additional textobjects for treesitter
 	use 'neovim/nvim-lspconfig'                       -- Collection of configurations for built-in LSP client
+	use 'williamboman/nvim-lsp-installer'			  -- Manager for my LSPs
 --	use 'hrsh7th/nvim-cmp'                            -- Autocompletion plugin
 --	use 'hrsh7th/cmp-nvim-lsp'                        -- Autocompletion complement?
 --	use 'nvim-lualine/lualine.nvim'                   -- Fancier statusline
@@ -95,6 +96,19 @@ vim.api.nvim_set_keymap("x", "<C-v>",     '"+p', {})
 vim.api.nvim_set_keymap("v", "<C-p>",     '"_dP', {})
 vim.api.nvim_set_keymap("i", "<C-BS>",    "<C-W>", {})
 
+-- LSP mappings
+vim.api.nvim_set_keymap("n", "<K>",       "<cmd>lua vim.lsp.buf.hover()<CR>", {})
+vim.api.nvim_set_keymap("n", "<C-k>",     "<cmd>lua vim.lsp.buf.signature_help()<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<CR>", {})
+vim.api.nvim_set_keymap("n", "gD",        "<cmd>lua vim.lsp.buf.declaration()<CR>", {})
+vim.api.nvim_set_keymap("n", "gd",        "<cmd>lua vim.lsp.buf.definition()<CR>", {})
+vim.api.nvim_set_keymap("n", "gi",        "<cmd>lua vim.lsp.buf.implementation()<CR>", {})
+vim.api.nvim_set_keymap("n", "gt",        "<cmd>lua vim.lsp.buf.type_definition()<CR>", {})
+vim.api.nvim_set_keymap("n", "gr",        "<cmd>lua vim.lsp.buf.references()<CR>", {})
+vim.api.nvim_set_keymap("n", "g[",        "<cmd>lua vim.diagnostic.goto_prev()<CR>", {})
+vim.api.nvim_set_keymap("n", "g]",        "<cmd>lua vim.diagnostic.goto_next()<CR>", {})
+vim.api.nvim_set_keymap("n", "<A-CR>",    "<cmd>lua vim.lsp.buf.code_action()<CR>", {})
+
 
 
 
@@ -143,26 +157,6 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 ------- Setup builtin LSPs -----------
 
-local lspconfig = require('lspconfig')
-local opts = { noremap = true, silent = true }
-
--- C#
-local pid = vim.fn.getpid()
-local omnisharp_bin = init_path .. "/language-servers/omnisharp-server/OmniSharp.exe"
-lspconfig.omnisharp.setup{
-	cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) },
-	on_attach = function(_, buf)
-		local map = function(press, cmd) vim.api.nvim_buf_set_keymap(buf, 'n', press, cmd, opts) end
-		map('<C-K>',     '<cmd>lua vim.lsp.buf.hover()<CR>')
-		map('<leader>r', '<cmd>lua vim.lsp.buf.rename()<CR>')
-		map('gD',        '<cmd>lua vim.lsp.buf.declaration()<CR>')
-		map('gd',        '<cmd>lua vim.lsp.buf.definition()<CR>')
-		map('gi',        '<cmd>lua vim.lsp.buf.implementation()<CR>')
-		map('gt',        '<cmd>lua vim.lsp.buf.type_definition()<CR>')
-		map('gr',        '<cmd>lua vim.lsp.buf.references()<CR>')
-		map('g[',        '<cmd>lua vim.diagnostic.goto_prev()<CR>')
-		map('g]',        '<cmd>lua vim.diagnostic.goto_next()<CR>')
-		map('<A-CR>',    '<cmd>lua vim.lsp.buf.code_action()<CR>')
-	end
-}
+local lsp_installer = require("nvim-lsp-installer")
+lsp_installer.on_server_ready(function(server) server:setup({}) end)
 
