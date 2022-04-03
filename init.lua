@@ -134,10 +134,6 @@ let g:startify_bookmarks = [
 
 -------------- Treesitter --------------
 
-if windows then
-	require 'nvim-treesitter.install'.compilers = { "clang" }
-end
-
 local configs = require'nvim-treesitter.configs'
 configs.setup {
 	ensure_installed = "maintained", -- Only use parsers that are maintained
@@ -151,6 +147,11 @@ configs.setup {
 
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+
+if windows then
+	-- Comment on first run, works after `choco install llvm`
+	require 'nvim-treesitter.install'.compilers = { "clang" }
+end
 
 
 
