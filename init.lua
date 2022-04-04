@@ -125,6 +125,13 @@ let g:startify_bookmarks = [
 	\ { 'o': ']] .. init_path .. [[/old-init.vim' },
 	\ { 'p': ']] .. init_path .. [[/plug-config.vim' },
 \ ]
+
+" Minimalist coloscheme adjusts
+hi String ctermfg=1 guifg=#D6BF9C
+hi Type ctermfg=28 guifg=#AFD787
+hi Identifier cterm=NONE gui=NONE
+hi Search     ctermbg=8 cterm=NONE guibg=#444444 gui=NONE
+hi MatchParen ctermbg=8 cterm=NONE guibg=#444444 gui=NONE
 ]])
 
 
