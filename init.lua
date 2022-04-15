@@ -151,8 +151,6 @@ configs.setup {
 	}
 }
 
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 
 if windows then
 	-- Comment on first run, works after `choco install llvm`
