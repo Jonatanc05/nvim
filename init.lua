@@ -140,9 +140,13 @@ hi MatchParen ctermbg=8 cterm=NONE guibg=#444444 gui=NONE
 
 -------------- Treesitter --------------
 
+if windows then
+	-- Comment on first run, works after following https://www.youtube.com/watch?v=5OSO8IRlyXc
+	require 'nvim-treesitter.install'.compilers = { "clang" }
+end
 local configs = require'nvim-treesitter.configs'
 configs.setup {
-	ensure_installed = "maintained", -- Only use parsers that are maintained
+	ensure_installed = {"c_sharp", "c", "cpp", "lua", "javascript", "css", "html", "markdown", "kotlin"},
 	highlight = { -- enable highlighting
 	  enable = true,
 	},
@@ -152,10 +156,6 @@ configs.setup {
 }
 
 
-if windows then
-	-- Comment on first run, works after `choco install llvm`
-	require 'nvim-treesitter.install'.compilers = { "clang" }
-end
 
 
 
@@ -163,5 +163,9 @@ end
 ------- Setup builtin LSPs -----------
 
 local lsp_installer = require("nvim-lsp-installer")
-lsp_installer.on_server_ready(function(server) server:setup({}) end)
+lsp_installer.setup {}
 
+require'lspconfig'.clangd.setup {
+	---filetypes = { "hpp" }
+}
+--:help vim.lsp.start_client()
