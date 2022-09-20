@@ -18,7 +18,7 @@ require('packer').startup(function(use)
 	use 'mhinz/vim-startify'                          -- Initial screen
 	use 'derekwyatt/vim-fswitch'                      -- Switch header-source file (c++)
 --	use 'embark-theme/vim'                            -- Colorscheme
-	use 'dikiaap/minimalist'
+	use 'dikiaap/minimalist'                          -- Colorscheme
 	use 'junegunn/fzf.vim'                            -- FZF
 	use 'junegunn/fzf'                                -- FZF
 	use 'airblade/vim-rooter'                         -- Find root directory of project
@@ -29,10 +29,15 @@ require('packer').startup(function(use)
 --	use 'nvim-treesitter/nvim-treesitter-textobjects' -- Additional textobjects for treesitter
 	use 'neovim/nvim-lspconfig'                       -- Collection of configurations for built-in LSP client
 	use 'williamboman/nvim-lsp-installer'			  -- Manager for my LSPs
---	use 'hrsh7th/nvim-cmp'                            -- Autocompletion plugin
---	use 'hrsh7th/cmp-nvim-lsp'                        -- Autocompletion complement?
 --	use 'nvim-lualine/lualine.nvim'                   -- Fancier statusline
+	use 'hrsh7th/cmp-nvim-lsp'
+	use 'hrsh7th/cmp-buffer'
+	use 'hrsh7th/cmp-path'
+	use 'hrsh7th/cmp-cmdline'
+	use 'hrsh7th/nvim-cmp'
 end)
+
+local cmp_plugin = require'cmp'
 
 
 
@@ -97,17 +102,28 @@ vim.api.nvim_set_keymap("v", "<C-p>",     '"_dP', {})
 vim.api.nvim_set_keymap("i", "<C-BS>",    "<C-W>", {})
 
 -- LSP mappings
-vim.api.nvim_set_keymap("n", "<K>",       "<cmd>lua vim.lsp.buf.hover()<CR>", {})
+vim.api.nvim_set_keymap("n", "K",         "<cmd>lua vim.lsp.buf.hover()<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<CR>", {})
 vim.api.nvim_set_keymap("n", "gD",        "<cmd>lua vim.lsp.buf.declaration()<CR>", {})
 vim.api.nvim_set_keymap("n", "gd",        "<cmd>lua vim.lsp.buf.definition()<CR>", {})
 vim.api.nvim_set_keymap("n", "gi",        "<cmd>lua vim.lsp.buf.implementation()<CR>", {})
-vim.api.nvim_set_keymap("n", "gt",        "<cmd>lua vim.lsp.buf.type_definition()<CR>", {})
+--vim.api.nvim_set_keymap("n", "gt",        "<cmd>lua vim.lsp.buf.type_definition()<CR>", {})
 vim.api.nvim_set_keymap("n", "gr",        "<cmd>lua vim.lsp.buf.references()<CR>", {})
 vim.api.nvim_set_keymap("n", "g[",        "<cmd>lua vim.diagnostic.goto_prev()<CR>", {})
 vim.api.nvim_set_keymap("n", "g]",        "<cmd>lua vim.diagnostic.goto_next()<CR>", {})
 vim.api.nvim_set_keymap("n", "<A-CR>",    "<cmd>lua vim.lsp.buf.code_action()<CR>", {})
 
+-- Completion mappings
+completion_mappings = {
+	["<C-p>"]     = cmp_plugin.mapping.select_prev_item(),
+	["<C-n>"]     = cmp_plugin.mapping.select_next_item(),
+	['<C-b>']     = cmp_plugin.mapping.scroll_docs(-4),
+	['<C-f>']     = cmp_plugin.mapping.scroll_docs(4),
+	['<C-Space>'] = cmp_plugin.mapping.complete(),
+	['<C-e>']     = cmp_plugin.mapping.abort(),
+	['<Tab>']     = cmp_plugin.mapping.confirm({ select = true }),
+	['<CR>']      = cmp_plugin.mapping.confirm({ select = false }),
+}
 
 
 
@@ -144,10 +160,11 @@ if windows then
 	-- Comment on first run, works after following https://www.youtube.com/watch?v=5OSO8IRlyXc
 	require 'nvim-treesitter.install'.compilers = { "clang" }
 end
+
 local configs = require'nvim-treesitter.configs'
 configs.setup {
 	ensure_installed = {"c_sharp", "c", "cpp", "lua", "javascript", "css", "html", "markdown", "kotlin"},
-	highlight = { -- enable highlighting
+	highlight = {
 	  enable = true,
 	},
 	indent = {
@@ -160,12 +177,31 @@ configs.setup {
 
 
 
-------- Setup builtin LSPs -----------
+------ Setup completion + builtin LSPs ------
 
+-- LSP Installer
 local lsp_installer = require("nvim-lsp-installer")
 lsp_installer.setup {}
 
-require'lspconfig'.clangd.setup {
-	---filetypes = { "hpp" }
-}
---:help vim.lsp.start_client()
+-- Completion
+cmp_plugin.setup({
+	window = {
+		-- completion = cmp_plugin.config.window.bordered(),
+		documentation = cmp_plugin.config.window.bordered(),
+	},
+	mapping = cmp_plugin.mapping.preset.insert(completion_mappings),
+	sources = cmp_plugin.config.sources(
+		{{ name = 'nvim_lsp' }},
+		{{ name = 'buffer' }}
+	)
+})
+local cmp_capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
+-- Individual LSP setups
+local lspconfig = require'lspconfig'
+if lspconfig.volar then
+	lspconfig.volar.setup {
+		filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
+		capabilities = cmp_capabilities
+	}
+end
