@@ -115,8 +115,8 @@ vim.api.nvim_set_keymap("n", "<A-CR>",    "<cmd>lua vim.lsp.buf.code_action()<CR
 
 -- Completion mappings
 completion_mappings = {
-	["<C-p>"]     = cmp_plugin.mapping.select_prev_item(),
-	["<C-n>"]     = cmp_plugin.mapping.select_next_item(),
+	["<A-p>"]     = cmp_plugin.mapping.select_prev_item(),
+	["<A-n>"]     = cmp_plugin.mapping.select_next_item(),
 	['<C-b>']     = cmp_plugin.mapping.scroll_docs(-4),
 	['<C-f>']     = cmp_plugin.mapping.scroll_docs(4),
 	['<C-Space>'] = cmp_plugin.mapping.complete(),
@@ -186,7 +186,7 @@ lsp_installer.setup {}
 -- Completion
 cmp_plugin.setup({
 	window = {
-		-- completion = cmp_plugin.config.window.bordered(),
+		completion = cmp_plugin.config.window.bordered(),
 		documentation = cmp_plugin.config.window.bordered(),
 	},
 	mapping = cmp_plugin.mapping.preset.insert(completion_mappings),
