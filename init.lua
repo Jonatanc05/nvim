@@ -1,7 +1,8 @@
 windows = jit and jit.os == 'Windows'
 ------- Install packer and plugins -------
 
-local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+local data_path = vim.fn.stdpath('data')
+local install_path = data_path .. '/site/pack/packer/start/packer.nvim'
 
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 	vim.fn.execute('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
@@ -164,7 +165,7 @@ end
 
 local configs = require'nvim-treesitter.configs'
 configs.setup {
-	ensure_installed = {"c_sharp", "c", "cpp", "lua", "javascript", "css", "html", "markdown", "kotlin"},
+	ensure_installed = {"c_sharp", "c", "cpp", "lua", "javascript", "css", "html", "markdown"},
 	highlight = {
 	  enable = true,
 	},
@@ -196,7 +197,7 @@ cmp_plugin.setup({
 		{{ name = 'buffer' }}
 	)
 })
-local cmp_capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local cmp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- Individual LSP setups
 local lspconfig = require'lspconfig'
@@ -204,5 +205,12 @@ if lspconfig.volar then
 	lspconfig.volar.setup {
 		filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
 		capabilities = cmp_capabilities
+	}
+end
+if lspconfig.omnisharp then
+	lspconfig.omnisharp.setup {
+		cmd = {"dotnet", data_path .. "lsp_servers/omnisharp/omnisharp/OmniSharp.dll"},
+		--use_mono = true,
+		sdk_include_prereleases = false
 	}
 end
