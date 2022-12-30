@@ -16,7 +16,7 @@ vim.cmd([[
 ]])
 
 require('packer').startup(function(use)
-	use { 'wbthomason/packer.nvim', opt = true }      -- Packer itself
+	use 'wbthomason/packer.nvim'                      -- Packer itself
 	use 'mhinz/vim-startify'                          -- Initial screen
 	use 'derekwyatt/vim-fswitch'                      -- Switch header-source file (c++)
 --	use 'embark-theme/vim'                            -- Colorscheme
