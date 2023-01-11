@@ -10,8 +10,8 @@ end
 
 vim.cmd([[
 	augroup Packer
-	  autocmd!
-	  autocmd BufWritePost init.lua PackerCompile
+		autocmd!
+		autocmd BufWritePost init.lua PackerCompile
 	augroup end
 ]])
 
@@ -37,6 +37,11 @@ require('packer').startup(function(use)
 	use 'hrsh7th/cmp-path'
 	use 'hrsh7th/cmp-cmdline'
 	use 'hrsh7th/nvim-cmp'
+	use {
+		'nvim-tree/nvim-tree.lua',                    -- File tree on a sidebar
+		requires = { 'nvim-tree/nvim-web-devicons' }, -- optional, only for icons
+		tag = 'nightly' -- optional, updated every week. (see issue #1193)
+	}
 end)
 
 local cmp_plugin = require'cmp'
@@ -102,6 +107,8 @@ vim.api.nvim_set_keymap("x", "<C-x>",     '"+d', {})
 vim.api.nvim_set_keymap("x", "<C-v>",     '"+p', {})
 vim.api.nvim_set_keymap("v", "<C-p>",     '"_dP', {})
 vim.api.nvim_set_keymap("i", "<C-BS>",    "<C-W>", {})
+vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", {})
+vim.api.nvim_set_keymap("n", "<F2>",      ":tabe<bar>vsplit<bar>term<CR><C-w>h:bd<CR>", {})
 
 -- LSP mappings
 vim.api.nvim_set_keymap("n", "K",         "<cmd>lua vim.lsp.buf.hover()<CR>", {})
@@ -145,11 +152,12 @@ let g:startify_bookmarks = [
 \ ]
 
 " Minimalist coloscheme adjusts
-hi String ctermfg=1 guifg=#D6BF9C
-hi Type ctermfg=28 guifg=#AFD787
-hi Identifier cterm=NONE gui=NONE
-hi Search     ctermbg=8 cterm=NONE guibg=#444444 gui=NONE
-hi MatchParen ctermbg=8 cterm=NONE guibg=#444444 gui=NONE
+hi String       ctermfg=1                           guifg=#D6BF9C
+hi Type         ctermfg=28                          guifg=#AFD787
+hi Identifier                            cterm=NONE                             gui=NONE
+hi Search                   ctermbg=8    cterm=NONE               guibg=#444444 gui=NONE
+hi MatchParen               ctermbg=8    cterm=NONE               guibg=#444444 gui=NONE
+hi StorageClass ctermfg=140 ctermbg=NONE cterm=NONE guifg=#AF87D7 guibg=NONE    gui=NONE
 ]])
 
 
@@ -167,12 +175,39 @@ local configs = require'nvim-treesitter.configs'
 configs.setup {
 	ensure_installed = {"c_sharp", "c", "cpp", "lua", "javascript", "css", "html", "markdown"},
 	highlight = {
-	  enable = true,
+		enable = true,
 	},
 	indent = {
-	  enable = false,
+		enable = false,
 	}
 }
+
+
+
+
+
+
+------------- Setup Neovim Tree -------------
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.opt.termguicolors = true
+
+require'nvim-tree'.setup({
+	sort_by = "case_sensitive",
+	view = {
+		adaptive_size = true,
+		mappings = {
+			list = {
+				-- :help nvim-tree-mappings
+				{ key = { "<C-i>" }, action = "cd" },
+			},
+		},
+	},
+	renderer = {
+		group_empty = true,
+	}
+})
+
 
 
 
