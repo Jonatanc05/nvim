@@ -167,7 +167,6 @@ hi StorageClass ctermfg=140 ctermbg=NONE cterm=NONE guifg=#AF87D7 guibg=NONE    
 -------------- Treesitter --------------
 
 if windows then
-	-- Comment on first run, works after following https://www.youtube.com/watch?v=5OSO8IRlyXc
 	require 'nvim-treesitter.install'.compilers = { "clang" }
 end
 
@@ -233,6 +232,7 @@ cmp_plugin.setup({
 	)
 })
 local cmp_capabilities = require('cmp_nvim_lsp').default_capabilities()
+cmp_capabilities.textDocument.completion.completionItem.snippetSupport = false -- nao tenho certeza se funciona
 
 -- Individual LSP setups
 local lspconfig = require'lspconfig'
