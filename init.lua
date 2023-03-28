@@ -80,6 +80,8 @@ vim.opt.compatible   = false
 
 vim.g.mapleader = " "
 
+vim.api.nvim_set_keymap("n", "<C-q>", ":bd<CR>", {})
+vim.api.nvim_set_keymap("n", "<C-Q>", ":bd!<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>q", ":bp<bar>sp<bar>bn<bar>bd<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>f", ":FZF<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>h", ":noh<CR>", {})
