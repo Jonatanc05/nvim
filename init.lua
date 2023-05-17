@@ -53,23 +53,24 @@ local cmp_plugin = require'cmp'
 
 -------------- General --------------
 
-vim.cmd 'colorscheme   minimalist'
-vim.opt.number       = true
-vim.opt.hidden       = true
-vim.opt.wrap         = false
-vim.opt.smartindent  = true
-vim.opt.tabstop      = 4
-vim.opt.shiftwidth   = 4
-vim.opt.cursorline   = true
-vim.opt.incsearch    = true
-vim.opt.showcmd      = true
-vim.opt.encoding     = "utf-8"
-vim.opt.fileencoding = "utf-8"
-vim.opt.cmdheight    = 2
-vim.opt.mouse        = "a"
-vim.opt.splitbelow   = true
-vim.opt.splitright   = true
-vim.opt.compatible   = false
+vim.cmd 'colorscheme     minimalist'
+vim.opt.number         = true
+vim.opt.hidden         = true
+vim.opt.wrap           = false
+vim.opt.smartindent    = true
+vim.opt.tabstop        = 4
+vim.opt.shiftwidth     = 4
+vim.opt.cursorline     = true
+vim.opt.incsearch      = true
+vim.opt.showcmd        = true
+vim.opt.encoding       = "utf-8"
+vim.opt.fileencoding   = "utf-8"
+vim.opt.cmdheight      = 2
+vim.opt.mouse          = "a"
+vim.opt.splitbelow     = true
+vim.opt.splitright     = true
+vim.opt.compatible     = false
+vim.opt.relativenumber =  true
 
 
 
@@ -111,6 +112,10 @@ vim.api.nvim_set_keymap("v", "<C-p>",     '"_dP', {})
 vim.api.nvim_set_keymap("i", "<C-BS>",    "<C-W>", {})
 vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", {})
 vim.api.nvim_set_keymap("n", "<F2>",      ":tabe<bar>vsplit<bar>term<CR><C-w>h:bd<CR>", {})
+vim.api.nvim_set_keymap("n", "<C-1>",     "1gt", {})
+vim.api.nvim_set_keymap("n", "<C-2>",     "2gt", {})
+vim.api.nvim_set_keymap("n", "<C-3>",     "3gt", {})
+vim.api.nvim_set_keymap("n", "<C-4>",     "4gt", {})
 
 -- LSP mappings
 vim.api.nvim_set_keymap("n", "K",         "<cmd>lua vim.lsp.buf.hover()<CR>", {})
@@ -238,16 +243,29 @@ cmp_capabilities.textDocument.completion.completionItem.snippetSupport = false -
 
 -- Individual LSP setups
 local lspconfig = require'lspconfig'
-if lspconfig.volar then
-	lspconfig.volar.setup {
-		filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
-		capabilities = cmp_capabilities
-	}
+
+-- Volar
+local volarSetupParams = {
+	filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
+	capabilities = cmp_capabilities
+}
+if windows then
+	volarSetupParams.init_options = { typescript = { tsdk = 'C:/Users/asus/AppData/Roaming/npm/node_modules/typescript/lib' } }
 end
+if lspconfig.volar then
+	lspconfig.volar.setup(volarSetupParams)
+end
+
+-- Omnisharp
 if lspconfig.omnisharp then
 	lspconfig.omnisharp.setup {
 		cmd = {"dotnet", data_path .. "lsp_servers/omnisharp/omnisharp/OmniSharp.dll"},
 		--use_mono = true,
 		sdk_include_prereleases = false
 	}
+end
+
+-- DartLS
+if lspconfig.dartls then
+	lspconfig.dartls.setup{}
 end
