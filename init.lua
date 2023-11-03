@@ -1,9 +1,23 @@
+-------- Global and helper stuff --------
+local data_path = vim.fn.stdpath('data')
 windows = jit and jit.os == 'Windows'
+
+local function add_to_path(new_path)
+	local path = os.getenv("PATH")
+	local path_sep = package.config:sub(1,1) == '\\' and ';' or ':'
+	if not string.find(path, new_path, 1, true) then
+		path = new_path .. path_sep .. path
+		if windows then
+			os.execute('setx PATH "' .. path .. '"')
+		else
+			os.execute('export PATH="' .. path .. '"')
+		end
+	end
+end
+
 ------- Install packer and plugins -------
 
-local data_path = vim.fn.stdpath('data')
 local install_path = data_path .. '/site/pack/packer/start/packer.nvim'
-
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 	vim.fn.execute('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
 end
@@ -179,7 +193,7 @@ end
 
 local configs = require'nvim-treesitter.configs'
 configs.setup {
-	ensure_installed = {"c_sharp", "c", "cpp", "lua", "javascript", "css", "html", "markdown"},
+	ensure_installed = {"c_sharp", "c", "cpp", "lua", "javascript", "css", "html", "markdown", "vue"},
 	highlight = {
 		enable = true,
 	},
@@ -245,15 +259,14 @@ cmp_capabilities.textDocument.completion.completionItem.snippetSupport = false -
 local lspconfig = require'lspconfig'
 
 -- Volar
-local volarSetupParams = {
-	filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
-	capabilities = cmp_capabilities
-}
-if windows then
-	volarSetupParams.init_options = { typescript = { tsdk = 'C:/Users/asus/AppData/Roaming/npm/node_modules/typescript/lib' } }
-end
 if lspconfig.volar then
-	lspconfig.volar.setup(volarSetupParams)
+	add_to_path(data_path .. '\\lsp_servers\\volar\\node_modules\\.bin');
+	lspconfig.volar.setup {
+		cmd = {'vue-language-server.cmd', '--stdio'},
+		filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
+		init_options = { typescript = { tsdk = data_path .. '/lsp_servers/volar/node_modules/typescript/lib' } },
+		capabilities = cmp_capabilities
+	}
 end
 
 -- Omnisharp
@@ -265,7 +278,7 @@ if lspconfig.omnisharp then
 	}
 end
 
--- DartLS
-if lspconfig.dartls then
-	lspconfig.dartls.setup{}
-end
+---- DartLS
+--if lspconfig.dartls then
+--	lspconfig.dartls.setup{}
+--end
