@@ -44,7 +44,8 @@ require('packer').startup(function(use)
 	use 'nvim-treesitter/nvim-treesitter'             -- Highlight, edit, and navigate code using a fast incremental parsing library
 --	use 'nvim-treesitter/nvim-treesitter-textobjects' -- Additional textobjects for treesitter
 	use 'neovim/nvim-lspconfig'                       -- Collection of configurations for built-in LSP client
-	use 'williamboman/nvim-lsp-installer'			  -- Manager for my LSPs
+	use 'williamboman/mason.nvim'                     -- Manager for my LSPs
+	use 'williamboman/mason-lspconfig.nvim'           -- Mason integration with lspconfig
 --	use 'nvim-lualine/lualine.nvim'                   -- Fancier statusline
 	use 'hrsh7th/cmp-nvim-lsp'
 	use 'hrsh7th/cmp-buffer'
@@ -95,8 +96,8 @@ vim.opt.relativenumber =  true
 
 vim.g.mapleader = " "
 
-vim.api.nvim_set_keymap("n", "<C-q>", ":bd<CR>", {})
-vim.api.nvim_set_keymap("n", "<C-Q>", ":bd!<CR>", {})
+vim.api.nvim_set_keymap("n", "<C-q>",     ":bd<CR>", {})
+vim.api.nvim_set_keymap("n", "<C-Q>",     ":bd!<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>q", ":bp<bar>sp<bar>bn<bar>bd<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>f", ":FZF<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>h", ":noh<CR>", {})
@@ -173,8 +174,8 @@ let g:startify_bookmarks = [
 \ ]
 
 " Minimalist coloscheme adjusts
-hi String       ctermfg=1                           guifg=#D6BF9C
-hi Type         ctermfg=28                          guifg=#AFD787
+hi String         ctermfg=1                            guifg=#D6BF9C
+hi Type           ctermfg=28                           guifg=#AFD787
 hi Identifier                            cterm=NONE                             gui=NONE
 hi Search                   ctermbg=8    cterm=NONE               guibg=#444444 gui=NONE
 hi MatchParen               ctermbg=8    cterm=NONE               guibg=#444444 gui=NONE
@@ -236,9 +237,9 @@ require'nvim-tree'.setup({
 
 ------ Setup completion + builtin LSPs ------
 
--- LSP Installer
-local lsp_installer = require("nvim-lsp-installer")
-lsp_installer.setup {}
+-- Mason LSP Installer
+require('mason').setup()
+require('mason-lspconfig').setup()
 
 -- Completion
 cmp_plugin.setup({
@@ -278,7 +279,16 @@ if lspconfig.omnisharp then
 	}
 end
 
----- DartLS
---if lspconfig.dartls then
---	lspconfig.dartls.setup{}
---end
+-- Rust
+if lspconfig.rust_analyzer then
+	lspconfig.rust_analyzer.setup{
+		settings = {
+			['rust-analyzer'] = {
+				diagnostics = {
+					enable = true
+				}
+			}
+		},
+		capabilities = cmp_capabilities
+	}
+end
