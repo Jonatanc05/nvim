@@ -21,4 +21,8 @@ pacman -S mingw-w64-x86_64-clang mingw-w64-x86_64-clang-tools-extra --noconfirm
 - Abra o Neovim, ignore o erro e execute `:PackerInstall`
 - Feche e abra o Neovim novamente e aguarde toda a instalação automática
 
-OBS: Para funcionamento dos ícones na árvore de arquivos é necessário ter uma [patched font](https://www.nerdfonts.com/font-downloads) instalada
+### Dependencias Opcionais
+
+Para funcionamento dos ícones na árvore de arquivos é necessário ter uma [patched font](https://www.nerdfonts.com/font-downloads) instalada.
+
+Para usar o `live_grep` do Telescope basta [instalar Ripgrep](https://github.com/BurntSushi/ripgrep#installation).

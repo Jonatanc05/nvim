@@ -35,8 +35,11 @@ require('packer').startup(function(use)
 	use 'derekwyatt/vim-fswitch'                      -- Switch header-source file (c++)
 --	use 'embark-theme/vim'                            -- Colorscheme
 	use 'dikiaap/minimalist'                          -- Colorscheme
-	use 'junegunn/fzf.vim'                            -- FZF
-	use 'junegunn/fzf'                                -- FZF
+	use {
+	  'nvim-telescope/telescope.nvim', tag = '0.1.4',
+	-- or                            , branch = '0.1.x',
+	  requires = { {'nvim-lua/plenary.nvim'} }
+	}
 	use 'airblade/vim-rooter'                         -- Find root directory of project
 	use 'mhinz/vim-signify'                           -- Git signs lines
 	use 'tpope/vim-fugitive'                          -- :Git commands
@@ -99,7 +102,8 @@ vim.g.mapleader = " "
 vim.api.nvim_set_keymap("n", "<C-q>",     ":bd<CR>", {})
 vim.api.nvim_set_keymap("n", "<C-Q>",     ":bd!<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>q", ":bp<bar>sp<bar>bn<bar>bd<CR>", {})
-vim.api.nvim_set_keymap("n", "<leader>f", ":FZF<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>ff", ":Telescope find_files<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>fg", ":Telescope live_grep<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>h", ":noh<CR>", {})
 vim.api.nvim_set_keymap("v", "<",         "<gv", {})
 vim.api.nvim_set_keymap("v", ">",         ">gv", {})
@@ -131,6 +135,8 @@ vim.api.nvim_set_keymap("n", "<C-1>",     "1gt", {})
 vim.api.nvim_set_keymap("n", "<C-2>",     "2gt", {})
 vim.api.nvim_set_keymap("n", "<C-3>",     "3gt", {})
 vim.api.nvim_set_keymap("n", "<C-4>",     "4gt", {})
+vim.api.nvim_set_keymap("n", "(",         "gT", {})
+vim.api.nvim_set_keymap("n", ")",         "gt", {})
 
 -- LSP mappings
 vim.api.nvim_set_keymap("n", "K",         "<cmd>lua vim.lsp.buf.hover()<CR>", {})
