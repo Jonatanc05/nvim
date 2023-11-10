@@ -137,6 +137,7 @@ vim.api.nvim_set_keymap("n", "<C-3>",     "3gt", {})
 vim.api.nvim_set_keymap("n", "<C-4>",     "4gt", {})
 vim.api.nvim_set_keymap("n", "(",         "gT", {})
 vim.api.nvim_set_keymap("n", ")",         "gt", {})
+vim.api.nvim_set_keymap("n", "<C-0>",     ":let lnum = line('.') | let colnum = col('.') | tabe % | call cursor(lnum, colnum)<CR>gT:q<CR>gt", {})
 
 -- LSP mappings
 vim.api.nvim_set_keymap("n", "K",         "<cmd>lua vim.lsp.buf.hover()<CR>", {})
@@ -152,8 +153,6 @@ vim.api.nvim_set_keymap("n", "<A-CR>",    "<cmd>lua vim.lsp.buf.code_action()<CR
 
 -- Completion mappings
 completion_mappings = {
-	["<A-p>"]     = cmp_plugin.mapping.select_prev_item(),
-	["<A-n>"]     = cmp_plugin.mapping.select_next_item(),
 	['<C-b>']     = cmp_plugin.mapping.scroll_docs(-4),
 	['<C-f>']     = cmp_plugin.mapping.scroll_docs(4),
 	['<C-Space>'] = cmp_plugin.mapping.complete(),
@@ -279,7 +278,7 @@ end
 -- Omnisharp
 if lspconfig.omnisharp then
 	lspconfig.omnisharp.setup {
-		cmd = {"dotnet", data_path .. "lsp_servers/omnisharp/omnisharp/OmniSharp.dll"},
+		--cmd = {"dotnet", data_path .. "lsp_servers/omnisharp/omnisharp/OmniSharp.dll"},
 		--use_mono = true,
 		sdk_include_prereleases = false
 	}
