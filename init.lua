@@ -34,7 +34,7 @@ require('packer').startup(function(use)
 	use 'mhinz/vim-startify'                          -- Initial screen
 	use 'derekwyatt/vim-fswitch'                      -- Switch header-source file (c++)
 --	use 'embark-theme/vim'                            -- Colorscheme
-	use 'dikiaap/minimalist'                          -- Colorscheme
+	use 'dikiaap/minimalist'                          -- Colorscheme (includes custom config in Legacy section of this file)
 	use {
 	  'nvim-telescope/telescope.nvim', tag = '0.1.4',
 	-- or                            , branch = '0.1.x',
