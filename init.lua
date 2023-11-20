@@ -199,7 +199,7 @@ end
 
 local configs = require'nvim-treesitter.configs'
 configs.setup {
-	ensure_installed = {"c_sharp", "c", "cpp", "lua", "javascript", "css", "html", "markdown", "vue"},
+	ensure_installed = {"c_sharp", "c", "cpp", "lua", "javascript", "css", "html", "markdown", "vue", "typescript"},
 	highlight = {
 		enable = true,
 	},
