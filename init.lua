@@ -266,11 +266,11 @@ local lspconfig = require'lspconfig'
 
 -- Volar
 if lspconfig.volar then
-	add_to_path(data_path .. '\\lsp_servers\\volar\\node_modules\\.bin');
+	--add_to_path();
 	lspconfig.volar.setup {
-		cmd = {'vue-language-server.cmd', '--stdio'},
+		cmd = {data_path .. '\\mason\\packages\\vue-language-server\\node_modules\\.bin\\vue-language-server.cmd', '--stdio'},
 		filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
-		init_options = { typescript = { tsdk = data_path .. '/lsp_servers/volar/node_modules/typescript/lib' } },
+		init_options = { typescript = { tsdk = data_path .. '/mason/packages/vue-language-server/node_modules/typescript/lib' } },
 		capabilities = cmp_capabilities
 	}
 end
@@ -278,9 +278,9 @@ end
 -- Omnisharp
 if lspconfig.omnisharp then
 	lspconfig.omnisharp.setup {
-		--cmd = {"dotnet", data_path .. "lsp_servers/omnisharp/omnisharp/OmniSharp.dll"},
-		--use_mono = true,
-		sdk_include_prereleases = false
+		use_mono = string.find(vim.fn.getcwd(), "GEO_ESB") ~= nil, -- Only use mono in the Pozzo project
+		sdk_include_prereleases = false,
+		capabilities = cmp_capabilities,
 	}
 end
 
@@ -295,5 +295,12 @@ if lspconfig.rust_analyzer then
 			}
 		},
 		capabilities = cmp_capabilities
+	}
+end
+
+-- Clangd
+if lspconfig.clangd then
+	lspconfig.clangd.setup {
+		capabilities = cmp_capabilities,
 	}
 end
