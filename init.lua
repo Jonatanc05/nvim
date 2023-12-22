@@ -138,6 +138,7 @@ vim.api.nvim_set_keymap("n", "(",         "gT", {})
 vim.api.nvim_set_keymap("n", ")",         "gt", {})
 vim.api.nvim_set_keymap("n", "<C-0>",     ":let lnum = line('.') | let colnum = col('.') | tabe % | call cursor(lnum, colnum)<CR>gT:q<CR>gt", {})
 vim.api.nvim_set_keymap('i', "<C-c>",     "<Plug>(copilot-suggest)", {})
+vim.api.nvim_set_keymap('n', "<C-w><C-w>",":bd<CR>", {})
 
 -- LSP mappings
 vim.api.nvim_set_keymap("n", "K",         "<cmd>lua vim.lsp.buf.hover()<CR>", {})
