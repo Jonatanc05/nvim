@@ -55,6 +55,7 @@ require('packer').startup(function(use)
 	use 'hrsh7th/cmp-path'
 	use 'hrsh7th/cmp-cmdline'
 	use 'hrsh7th/nvim-cmp'
+	use 'github/copilot.vim'
 	use {
 		'nvim-tree/nvim-tree.lua',                    -- File tree on a sidebar
 		requires = { 'nvim-tree/nvim-web-devicons' }, -- optional, only for icons
@@ -138,6 +139,7 @@ vim.api.nvim_set_keymap("n", "<C-4>",     "4gt", {})
 vim.api.nvim_set_keymap("n", "(",         "gT", {})
 vim.api.nvim_set_keymap("n", ")",         "gt", {})
 vim.api.nvim_set_keymap("n", "<C-0>",     ":let lnum = line('.') | let colnum = col('.') | tabe % | call cursor(lnum, colnum)<CR>gT:q<CR>gt", {})
+vim.api.nvim_set_keymap('i', "<C-c>",     "<Plug>(copilot-suggest)", {})
 
 -- LSP mappings
 vim.api.nvim_set_keymap("n", "K",         "<cmd>lua vim.lsp.buf.hover()<CR>", {})
