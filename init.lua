@@ -55,7 +55,7 @@ require('packer').startup(function(use)
 	use 'hrsh7th/cmp-path'
 	use 'hrsh7th/cmp-cmdline'
 	use 'hrsh7th/nvim-cmp'
-	use 'github/copilot.vim'
+	use 'Exafunction/codeium.vim'
 	use {
 		'nvim-tree/nvim-tree.lua',                    -- File tree on a sidebar
 		requires = { 'nvim-tree/nvim-web-devicons' }, -- optional, only for icons
@@ -137,7 +137,6 @@ vim.api.nvim_set_keymap("n", "<C-4>",     "4gt", {})
 vim.api.nvim_set_keymap("n", "(",         "gT", {})
 vim.api.nvim_set_keymap("n", ")",         "gt", {})
 vim.api.nvim_set_keymap("n", "<C-0>",     ":let lnum = line('.') | let colnum = col('.') | tabe % | call cursor(lnum, colnum)<CR>gT:q<CR>gt", {})
-vim.api.nvim_set_keymap('i', "<C-c>",     "<Plug>(copilot-suggest)", {})
 vim.api.nvim_set_keymap('n', "<C-w><C-m>",":bd<CR>", {})
 vim.api.nvim_set_keymap('n', "<leader>g", ":Gvsp<CR>", {})
 vim.api.nvim_set_keymap('n', "g)", ":tabmove +1<CR>", {})
@@ -149,11 +148,13 @@ vim.api.nvim_set_keymap("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<CR>", {
 vim.api.nvim_set_keymap("n", "gD",        "<cmd>lua vim.lsp.buf.declaration()<CR>", {})
 vim.api.nvim_set_keymap("n", "gd",        "<cmd>lua vim.lsp.buf.definition()<CR>", {})
 vim.api.nvim_set_keymap("n", "gi",        "<cmd>lua vim.lsp.buf.implementation()<CR>", {})
---vim.api.nvim_set_keymap("n", "gt",        "<cmd>lua vim.lsp.buf.type_definition()<CR>", {})
+vim.api.nvim_set_keymap("n", "gy",        "<cmd>lua vim.lsp.buf.type_definition()<CR>", {})
 vim.api.nvim_set_keymap("n", "gr",        "<cmd>lua vim.lsp.buf.references()<CR>", {})
 vim.api.nvim_set_keymap("n", "g[",        "<cmd>lua vim.diagnostic.goto_prev()<CR>", {})
 vim.api.nvim_set_keymap("n", "g]",        "<cmd>lua vim.diagnostic.goto_next()<CR>", {})
 vim.api.nvim_set_keymap("n", "<A-CR>",    "<cmd>lua vim.lsp.buf.code_action()<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>d", "<cmd>lua vim.diagnostic.open_float()<CR>", {})
+
 
 -- Completion mappings
 completion_mappings = {
