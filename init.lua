@@ -44,7 +44,14 @@ require('packer').startup(function(use)
 	use 'mhinz/vim-signify'                           -- Git signs lines
 	use 'tpope/vim-fugitive'                          -- :Git commands
 	use 'tpope/vim-rhubarb'                           -- :GBrowser to github
-	use 'nvim-treesitter/nvim-treesitter'             -- Highlight, edit, and navigate code using a fast incremental parsing library
+    use {
+		'nvim-treesitter/nvim-treesitter',
+		tag = 'v0.8.5.2',
+		run = function()
+            local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+            ts_update()
+        end,
+    }
 --	use 'nvim-treesitter/nvim-treesitter-textobjects' -- Additional textobjects for treesitter
 	use 'neovim/nvim-lspconfig'                       -- Collection of configurations for built-in LSP client
 	use 'williamboman/mason.nvim'                     -- Manager for my LSPs
