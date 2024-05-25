@@ -322,3 +322,13 @@ if lspconfig.clangd then
 		capabilities = cmp_capabilities,
 	}
 end
+
+-- Zig
+if lspconfig.zls then
+	lspconfig.zls.setup {
+		path = data_path .. '\\mason\\bin\\zls.cmd',
+		capabilities = cmp_capabilities,
+		enableBuildOnSave = true,
+	}
+end
+
