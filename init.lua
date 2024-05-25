@@ -148,6 +148,7 @@ vim.api.nvim_set_keymap('n', "<C-w><C-m>",":bd<CR>", {})
 vim.api.nvim_set_keymap('n', "<leader>g", ":Gvsp<CR>", {})
 vim.api.nvim_set_keymap('n', "g)", ":tabmove +1<CR>", {})
 vim.api.nvim_set_keymap('n', "g(", ":tabmove -1<CR>", {})
+vim.api.nvim_set_keymap('v', "<leader>q", ":norm i//<CR>", {})
 
 -- LSP mappings
 vim.api.nvim_set_keymap("n", "K",         "<cmd>lua vim.lsp.buf.hover()<CR>", {})
