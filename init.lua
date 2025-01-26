@@ -66,7 +66,7 @@ require('packer').startup(function(use)
 	use {
 		'nvim-tree/nvim-tree.lua',                    -- File tree on a sidebar
 		requires = { 'nvim-tree/nvim-web-devicons' }, -- optional, only for icons
-		tag = 'nightly' -- optional, updated every week. (see issue #1193)
+		--tag = 'nightly' -- optional, updated every week. (see issue #1193)
 	}
 end)
 
