@@ -107,8 +107,6 @@ vim.opt.relativenumber =  true
 
 vim.g.mapleader = " "
 
-vim.api.nvim_set_keymap("n", "<C-q>",     ":bd<CR>", {})
-vim.api.nvim_set_keymap("n", "<C-Q>",     ":bd!<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>q", ":bp<bar>sp<bar>bn<bar>bd<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>ff", ":Telescope find_files<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>fg", ":Telescope live_grep<CR>", {})
@@ -161,7 +159,7 @@ vim.api.nvim_set_keymap("n", "gi",        ":vsp<CR><cmd>lua vim.lsp.buf.implemen
 vim.api.nvim_set_keymap("n", "gr",        "<cmd>lua vim.lsp.buf.references()<CR>", {})
 vim.api.nvim_set_keymap("n", "g[",        "<cmd>lua vim.diagnostic.goto_prev()<CR>", {})
 vim.api.nvim_set_keymap("n", "g]",        "<cmd>lua vim.diagnostic.goto_next()<CR>", {})
-vim.api.nvim_set_keymap("n", "<A-CR>",    "<cmd>lua vim.lsp.buf.code_action()<CR>", {})
+vim.api.nvim_set_keymap("n", "<C-.>",    "<cmd>lua vim.lsp.buf.code_action()<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>d", "<cmd>lua vim.diagnostic.open_float()<CR>", {})
 
 
@@ -171,7 +169,7 @@ completion_mappings = {
 	['<C-f>']     = cmp_plugin.mapping.scroll_docs(4),
 	['<C-Space>'] = cmp_plugin.mapping.complete(),
 	['<C-e>']     = cmp_plugin.mapping.abort(),
-	['<Tab>']     = cmp_plugin.mapping.confirm({ select = true }),
+--	['<Tab>']     = cmp_plugin.mapping.confirm({ select = true }),
 	['<CR>']      = cmp_plugin.mapping.confirm({ select = false }),
 }
 
@@ -300,20 +298,6 @@ if lspconfig.omnisharp then
 		use_mono = string.find(vim.fn.getcwd(), "GEO_ESB") ~= nil, -- Only use mono in the Pozzo project
 		sdk_include_prereleases = false,
 		capabilities = cmp_capabilities,
-	}
-end
-
--- Rust
-if lspconfig.rust_analyzer then
-	lspconfig.rust_analyzer.setup{
-		settings = {
-			['rust-analyzer'] = {
-				diagnostics = {
-					enable = true
-				}
-			}
-		},
-		capabilities = cmp_capabilities
 	}
 end
 
