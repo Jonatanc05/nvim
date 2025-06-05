@@ -30,52 +30,30 @@ end
 
 ------- Install_packer_and_plugins -------
 
-local install_path = data_path .. '/site/pack/packer/start/packer.nvim'
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-	vim.fn.execute('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
+local lazypath = data_path .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim", lazypath })
 end
+vim.opt.rtp:prepend(lazypath)
 
-vim.cmd([[
-	augroup Packer
-		autocmd!
-		autocmd BufWritePost init.lua PackerCompile
-	augroup end
-]])
-
-require('packer').startup(function(use)
-	use 'wbthomason/packer.nvim'                      -- Packer itself
-	use 'mhinz/vim-startify'                          -- Initial screen
-	use 'derekwyatt/vim-fswitch'                      -- Switch header-source file (c++)
---	use 'embark-theme/vim'                            -- Colorscheme
-	use 'dikiaap/minimalist'                          -- Colorscheme (includes custom config in Legacy section of this file)
-	use {
-	  'nvim-telescope/telescope.nvim', tag = '0.1.4',
-	-- or                            , branch = '0.1.x',
-	  requires = { {'nvim-lua/plenary.nvim'} }
-	}
-	use 'airblade/vim-rooter'                         -- Find root directory of project
-	use 'mhinz/vim-signify'                           -- Git signs lines
-	use 'tpope/vim-fugitive'                          -- :Git commands
-	use 'tpope/vim-rhubarb'                           -- :GBrowser to github
-	use 'nvim-treesitter/nvim-treesitter'
---	use 'nvim-treesitter/nvim-treesitter-textobjects' -- Additional textobjects for treesitter
-	use 'neovim/nvim-lspconfig'                       -- Collection of configurations for built-in LSP client
-	use 'williamboman/mason.nvim'                     -- Manager for my LSPs
-	use 'williamboman/mason-lspconfig.nvim'           -- Mason integration with lspconfig
---	use 'nvim-lualine/lualine.nvim'                   -- Fancier statusline
-	use 'hrsh7th/cmp-nvim-lsp'
-	use 'hrsh7th/cmp-buffer'
-	use 'hrsh7th/cmp-path'
-	use 'hrsh7th/cmp-cmdline'
-	use 'hrsh7th/nvim-cmp'
-	use 'Exafunction/codeium.vim'
-	use {
-		'nvim-tree/nvim-tree.lua',                    -- File tree on a sidebar
-		requires = { 'nvim-tree/nvim-web-devicons' }, -- optional, only for icons
-		--tag = 'nightly' -- optional, updated every week. (see issue #1193)
-	}
-end)
-
+require("lazy").setup( {
+  "folke/lazy.nvim",
+  "mhinz/vim-startify",
+  "derekwyatt/vim-fswitch",						-- Switch header-source file (c++)
+  "dikiaap/minimalist",							-- Colorscheme
+--	"embark-theme/vim'                            -- Colorscheme
+  { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+  "tpope/vim-fugitive",							-- Git controls
+  "mhinz/vim-signify",							-- Git signs on the side
+  "nvim-treesitter/nvim-treesitter",
+--	"nvim-treesitter/nvim-treesitter-textobjects"			-- Additional textobjects for treesitter
+  "neovim/nvim-lspconfig",
+  "williamboman/mason.nvim",
+  "williamboman/mason-lspconfig.nvim",
+  { "hrsh7th/nvim-cmp", dependencies = { "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "hrsh7th/cmp-cmdline" }},
+  "Exafunction/codeium.vim",
+  { "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" } },
+})
 local cmp_plugin = require'cmp'
 
 
@@ -219,7 +197,10 @@ end
 
 local configs = require'nvim-treesitter.configs'
 configs.setup {
-	ensure_installed = {"c_sharp", "c", "cpp", "lua", "javascript", "css", "html", "markdown", "vue", "typescript"},
+	ensure_installed = {
+		"c_sharp", "c", "cpp", "diff", "lua", "javascript", "css",
+		"html", "markdown", "vue", "typescript", "json", "yaml", "zig"
+	},
 	highlight = {
 		enable = true,
 	},
@@ -242,12 +223,6 @@ require'nvim-tree'.setup({
 	sort_by = "case_sensitive",
 	view = {
 		adaptive_size = true,
-		mappings = {
-			list = {
-				-- :help nvim-tree-mappings
-				{ key = { "<C-i>" }, action = "cd" },
-			},
-		},
 	},
 	update_focused_file = {
 		enable = true,

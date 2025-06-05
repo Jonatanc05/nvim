@@ -7,7 +7,7 @@
 cd ~/.config/
 git clone https://github.com/Jonatanc05/nvim.git
 ```
-- Execute `:PackerInstall` no Neovim
+- Abra o Neovim (se necessário `:Lazy sync`)
 
 ### Windows
 
@@ -18,7 +18,7 @@ pacman -S mingw-w64-x86_64-clang mingw-w64-x86_64-clang-tools-extra --noconfirm
 ```
 - Adicione `{instalacao-msys2}/mingw64/bin` ao path (por padrão basta um `setx path "%path%;C:\msys64\mingw64\bin"`)
 - Clone esse repositório em `~/AppData/Local/nvim/`
-- Abra o Neovim, ignore o erro e execute `:PackerInstall`
+- Abra o Neovim (se necessário `:Lazy sync`)
 - Feche e abra o Neovim novamente e aguarde toda a instalação automática
 
 ### Dependencias Opcionais
