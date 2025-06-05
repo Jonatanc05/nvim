@@ -1,4 +1,17 @@
--------- Global and helper stuff --------
+-------- INDEX --------
+
+-- Global_and_helper_stuff
+-- Install_packer_and_plugins
+-- General
+-- Key_Maps
+--     LSP_mappings
+--     Completion_mappings
+-- Legacy_stuff
+-- Treesitter
+-- Setup_Neovim_Tree
+-- Setup_completion_and_builtin_LSPs
+
+-------- Global_and_helper_stuff --------
 local data_path = vim.fn.stdpath('data')
 windows = jit and jit.os == 'Windows'
 
@@ -15,7 +28,7 @@ local function add_to_path(new_path)
 	end
 end
 
-------- Install packer and plugins -------
+------- Install_packer_and_plugins -------
 
 local install_path = data_path .. '/site/pack/packer/start/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
@@ -44,14 +57,7 @@ require('packer').startup(function(use)
 	use 'mhinz/vim-signify'                           -- Git signs lines
 	use 'tpope/vim-fugitive'                          -- :Git commands
 	use 'tpope/vim-rhubarb'                           -- :GBrowser to github
-    use {
-		'nvim-treesitter/nvim-treesitter',
-		tag = 'v0.8.5.2',
-		run = function()
-            local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
-            ts_update()
-        end,
-    }
+	use 'nvim-treesitter/nvim-treesitter'
 --	use 'nvim-treesitter/nvim-treesitter-textobjects' -- Additional textobjects for treesitter
 	use 'neovim/nvim-lspconfig'                       -- Collection of configurations for built-in LSP client
 	use 'williamboman/mason.nvim'                     -- Manager for my LSPs
@@ -103,13 +109,13 @@ vim.opt.relativenumber =  true
 
 
 
--------------- Key Maps -------------
+-------------- Key_Maps -------------
 
 vim.g.mapleader = " "
 
-vim.api.nvim_set_keymap("n", "<leader>q", ":bp<bar>sp<bar>bn<bar>bd<CR>", {})
-vim.api.nvim_set_keymap("n", "<leader>ff", ":Telescope find_files<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>fd", ":Telescope find_files<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>fg", ":Telescope live_grep<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>fb", ":Telescope buffers<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>h", ":noh<CR>", {})
 vim.api.nvim_set_keymap("v", "<",         "<gv", {})
 vim.api.nvim_set_keymap("v", ">",         ">gv", {})
@@ -147,10 +153,8 @@ vim.api.nvim_set_keymap('n', "<leader>g", ":Gvsp<CR>", {})
 vim.api.nvim_set_keymap('n', "g)", ":tabmove +1<CR>", {})
 vim.api.nvim_set_keymap('n', "g(", ":tabmove -1<CR>", {})
 vim.api.nvim_set_keymap('v', "<leader>q", ":norm i//<CR>", {})
-vim.api.nvim_set_keymap('n', "<C-d>", "M<C-d>zz", {})
-vim.api.nvim_set_keymap('n', "<C-u>", "M<C-u>zz", {})
 
--- LSP mappings
+-- LSP_mappings
 vim.api.nvim_set_keymap("n", "K",         "<cmd>lua vim.lsp.buf.hover()<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<CR>", {})
 --vim.api.nvim_set_keymap("n", "gD",        "<cmd>lua vim.lsp.buf.declaration()<CR>", {})
@@ -163,9 +167,11 @@ vim.api.nvim_set_keymap("n", "g[",        "<cmd>lua vim.diagnostic.goto_prev()<C
 vim.api.nvim_set_keymap("n", "g]",        "<cmd>lua vim.diagnostic.goto_next()<CR>", {})
 vim.api.nvim_set_keymap("n", "<C-.>",    "<cmd>lua vim.lsp.buf.code_action()<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>d", "<cmd>lua vim.diagnostic.open_float()<CR>", {})
+vim.api.nvim_set_keymap("n", "]f", "/{<CR>%jzz", {noremap = true, silent = true})
+vim.api.nvim_set_keymap("n", "[f", "?}<CR>%kzz", {noremap = true, silent = true})
 
 
--- Completion mappings
+-- Completion_mappings
 completion_mappings = {
 	['<C-b>']     = cmp_plugin.mapping.scroll_docs(-4),
 	['<C-f>']     = cmp_plugin.mapping.scroll_docs(4),
@@ -179,7 +185,7 @@ completion_mappings = {
 
 
 
------------- Legacy stuff -----------
+------------ Legacy_stuff -----------
 
 local init_path = vim.fn.stdpath('config')
 
@@ -227,7 +233,7 @@ configs.setup {
 
 
 
-------------- Setup Neovim Tree -------------
+------------- Setup_Neovim_Tree -------------
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
@@ -259,7 +265,7 @@ require'nvim-tree'.setup({
 
 
 
------- Setup completion + builtin LSPs ------
+------ Setup_completion_and_builtin_LSPs ------
 
 -- Mason LSP Installer
 require('mason').setup()
