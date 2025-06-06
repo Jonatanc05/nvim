@@ -38,21 +38,23 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup( {
   "folke/lazy.nvim",
+  { "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" } },
   "mhinz/vim-startify",
   "derekwyatt/vim-fswitch",						-- Switch header-source file (c++)
   "dikiaap/minimalist",							-- Colorscheme
---	"embark-theme/vim'                            -- Colorscheme
+--	"embark-theme/vim'							-- Colorscheme
   { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   "tpope/vim-fugitive",							-- Git controls
-  "mhinz/vim-signify",							-- Git signs on the side
-  "nvim-treesitter/nvim-treesitter",
---	"nvim-treesitter/nvim-treesitter-textobjects"			-- Additional textobjects for treesitter
+  "mhinz/vim-signify",							-- Git signs on sidebar
+  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+--	"nvim-treesitter/nvim-treesitter-textobjects"			-- Create motions for functions
+
+  -- LSP and completion
   "neovim/nvim-lspconfig",
   "williamboman/mason.nvim",
   "williamboman/mason-lspconfig.nvim",
   { "hrsh7th/nvim-cmp", dependencies = { "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "hrsh7th/cmp-cmdline" }},
   "Exafunction/codeium.vim",
-  { "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" } },
 })
 local cmp_plugin = require'cmp'
 
