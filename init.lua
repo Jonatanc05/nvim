@@ -44,9 +44,10 @@ require("lazy").setup( {
   "dikiaap/minimalist",							-- Colorscheme
 --	"embark-theme/vim'							-- Colorscheme
   { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
+  "airblade/vim-rooter",
   "tpope/vim-fugitive",							-- Git controls
   "mhinz/vim-signify",							-- Git signs on sidebar
-  { "nvim-treesitter/nvim-treesitter" },
+  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 --	"nvim-treesitter/nvim-treesitter-textobjects"			-- Create motions for functions
 
   -- LSP and completion
