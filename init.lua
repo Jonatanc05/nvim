@@ -46,7 +46,7 @@ require("lazy").setup( {
   { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   "tpope/vim-fugitive",							-- Git controls
   "mhinz/vim-signify",							-- Git signs on sidebar
-  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+  { "nvim-treesitter/nvim-treesitter" },
 --	"nvim-treesitter/nvim-treesitter-textobjects"			-- Create motions for functions
 
   -- LSP and completion
@@ -267,38 +267,29 @@ cmp_capabilities.textDocument.completion.completionItem.snippetSupport = false -
 local lspconfig = require'lspconfig'
 
 -- Volar
-if lspconfig.volar then
-	--add_to_path();
-	lspconfig.volar.setup {
-		cmd = {data_path .. '\\mason\\packages\\vue-language-server\\node_modules\\.bin\\vue-language-server.cmd', '--stdio'},
-		filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
-		init_options = { typescript = { tsdk = data_path .. '/mason/packages/vue-language-server/node_modules/typescript/lib' } },
-		capabilities = cmp_capabilities
-	}
-end
+vim.lsp.config('volar', {
+	cmd = {data_path .. '\\mason\\packages\\vue-language-server\\node_modules\\.bin\\vue-language-server.cmd', '--stdio'},
+	filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
+	init_options = { typescript = { tsdk = data_path .. '/mason/packages/vue-language-server/node_modules/typescript/lib' } },
+	capabilities = cmp_capabilities
+})
 
 -- Omnisharp
-if lspconfig.omnisharp then
-	lspconfig.omnisharp.setup {
-		use_mono = string.find(vim.fn.getcwd(), "GEO_ESB") ~= nil, -- Only use mono in the Pozzo project
-		sdk_include_prereleases = false,
-		capabilities = cmp_capabilities,
-	}
-end
+vim.lsp.config('omnisharp', {
+	use_mono = string.find(vim.fn.getcwd(), "GEO_ESB") ~= nil, -- Only use mono in the Pozzo project
+	sdk_include_prereleases = false,
+	capabilities = cmp_capabilities,
+})
 
 -- Clangd
-if lspconfig.clangd then
-	lspconfig.clangd.setup {
-		capabilities = cmp_capabilities,
-	}
-end
+vim.lsp.config('clangd', {
+	capabilities = cmp_capabilities,
+})
 
 -- Zig
-if lspconfig.zls then
-	lspconfig.zls.setup {
-		path = data_path .. '\\mason\\bin\\zls.cmd',
-		capabilities = cmp_capabilities,
-		enableBuildOnSave = true,
-	}
-end
+vim.lsp.config('zls', {
+	cmd = { data_path .. '\\mason\\bin\\zls.cmd' },
+	capabilities = cmp_capabilities,
+	enableBuildOnSave = true,
+})
 
