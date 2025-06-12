@@ -134,11 +134,12 @@ vim.api.nvim_set_keymap('n', "<leader>g", ":Gvsp<CR>", {})
 vim.api.nvim_set_keymap('n', "g)", ":tabmove +1<CR>", {})
 vim.api.nvim_set_keymap('n', "g(", ":tabmove -1<CR>", {})
 vim.api.nvim_set_keymap('v', "<leader>q", ":norm i//<CR>", {})
+vim.api.nvim_set_keymap('n', "<C-g>", ":0Gclog<CR>", {})
 
 -- LSP_mappings
 vim.api.nvim_set_keymap("n", "K",         "<cmd>lua vim.lsp.buf.hover()<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<CR>", {})
---vim.api.nvim_set_keymap("n", "gD",        "<cmd>lua vim.lsp.buf.declaration()<CR>", {})
+vim.api.nvim_set_keymap("n", "gD",        "<cmd>lua vim.lsp.buf.definition()<CR>", {})
 vim.api.nvim_set_keymap("n", "gd",        ":vsp<CR><cmd>lua vim.lsp.buf.definition()<CR>", {})
 vim.api.nvim_set_keymap("n", "gs",        "<cmd>lua vim.lsp.buf.definition()<CR>", {})
 vim.api.nvim_set_keymap("n", "gc",        ":sp<CR><cmd>lua vim.lsp.buf.definition()<CR>", {})
