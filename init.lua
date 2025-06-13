@@ -84,6 +84,7 @@ vim.opt.splitbelow     = true
 vim.opt.splitright     = true
 vim.opt.compatible     = false
 vim.opt.relativenumber =  true
+vim.opt.switchbuf      = 'split'
 
 
 
@@ -135,6 +136,8 @@ vim.api.nvim_set_keymap('n', "g)", ":tabmove +1<CR>", {})
 vim.api.nvim_set_keymap('n', "g(", ":tabmove -1<CR>", {})
 vim.api.nvim_set_keymap('v', "<leader>q", ":norm i//<CR>", {})
 vim.api.nvim_set_keymap('n', "<C-g>", ":0Gclog<CR>", {})
+vim.api.nvim_set_keymap('n', "<Tab>", ":WintabsNext<CR>", {})
+vim.api.nvim_set_keymap('n', "<S-Tab>", ":WintabsPrevious<CR>", {})
 
 -- LSP_mappings
 vim.api.nvim_set_keymap("n", "K",         "<cmd>lua vim.lsp.buf.hover()<CR>", {})
