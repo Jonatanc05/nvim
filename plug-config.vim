@@ -5,9 +5,7 @@ let g:startify_lists = [
 	\ { 'type': 'files', 	 'header': ['	Arquivos Recentes'] },
 	\ { 'type': 'bookmarks', 'header': ['	Bookmarks'] }
 \ ]
-let g:startify_session_delete_buffers = 1
 let g:startify_fortune_use_unicode = 1
-let g:startify_session_persistence = 1
 
 " Signify
 let g:signify_sign_add               = '+'

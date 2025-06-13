@@ -176,8 +176,6 @@ vim.cmd('source ' .. init_path .. '/plug-config.vim')
 vim.cmd([[
 let g:startify_bookmarks = [
 	\ { 'i': ']] .. init_path .. [[/init.lua' },
-	\ { 'o': ']] .. init_path .. [[/old-init.vim' },
-	\ { 'p': ']] .. init_path .. [[/plug-config.vim' },
 \ ]
 
 " Minimalist coloscheme adjusts
