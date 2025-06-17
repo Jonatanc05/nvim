@@ -4,6 +4,7 @@
 -- Install_packer_and_plugins
 -- General
 -- Key_Maps
+--     Plugin_mappings
 --     LSP_mappings
 --     Completion_mappings
 -- Legacy_stuff
@@ -50,6 +51,8 @@ require("lazy").setup( {
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 --	"nvim-treesitter/nvim-treesitter-textobjects"			-- Create motions for functions
 
+  "zefei/vim-wintabs",
+
   -- LSP and completion
   "neovim/nvim-lspconfig",
   "williamboman/mason.nvim",
@@ -84,7 +87,7 @@ vim.opt.splitbelow     = true
 vim.opt.splitright     = true
 vim.opt.compatible     = false
 vim.opt.relativenumber =  true
-vim.opt.switchbuf      = 'split'
+vim.opt.switchbuf      = 'vsplit'
 
 
 
@@ -95,9 +98,6 @@ vim.opt.switchbuf      = 'split'
 
 vim.g.mapleader = " "
 
-vim.api.nvim_set_keymap("n", "<leader>fd", ":Telescope find_files<CR>", {})
-vim.api.nvim_set_keymap("n", "<leader>fg", ":Telescope live_grep<CR>", {})
-vim.api.nvim_set_keymap("n", "<leader>fb", ":Telescope buffers<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>h", ":noh<CR>", {})
 vim.api.nvim_set_keymap("v", "<",         "<gv", {})
 vim.api.nvim_set_keymap("v", ">",         ">gv", {})
@@ -121,7 +121,6 @@ vim.api.nvim_set_keymap("x", "<C-x>",     '"+d', {})
 vim.api.nvim_set_keymap("x", "<C-v>",     '"+P', {})
 vim.api.nvim_set_keymap("v", "p",         '"_dP', {})
 vim.api.nvim_set_keymap("i", "<C-BS>",    "<C-W>", {})
-vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", {})
 vim.api.nvim_set_keymap("n", "<F2>",      ":tabe<bar>vsplit<bar>term<CR><C-w>h:bd<CR>", {})
 vim.api.nvim_set_keymap("n", "<C-1>",     "1gt", {})
 vim.api.nvim_set_keymap("n", "<C-2>",     "2gt", {})
@@ -135,9 +134,18 @@ vim.api.nvim_set_keymap('n', "<leader>g", ":Gvsp<CR>", {})
 vim.api.nvim_set_keymap('n', "g)", ":tabmove +1<CR>", {})
 vim.api.nvim_set_keymap('n', "g(", ":tabmove -1<CR>", {})
 vim.api.nvim_set_keymap('v', "<leader>q", ":norm i//<CR>", {})
+vim.api.nvim_create_user_command("Tab2", "set tabstop=2 shiftwidth=2 expandtab", {})
+vim.api.nvim_create_user_command("Tab4", "set tabstop=4 shiftwidth=4 noexpandtab", {})
+
+-- Plugin_mappings
+vim.api.nvim_set_keymap("n", "<leader>fd", ":Telescope find_files<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>fg", ":Telescope live_grep<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>fb", ":Telescope buffers<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", {})
 vim.api.nvim_set_keymap('n', "<C-g>", ":0Gclog<CR>", {})
 vim.api.nvim_set_keymap('n', "<Tab>", ":WintabsNext<CR>", {})
 vim.api.nvim_set_keymap('n', "<S-Tab>", ":WintabsPrevious<CR>", {})
+vim.api.nvim_set_keymap('n', "<leader>d", ":WintabsClose<CR>", {})
 
 -- LSP_mappings
 vim.api.nvim_set_keymap("n", "K",         "<cmd>lua vim.lsp.buf.hover()<CR>", {})
@@ -279,7 +287,8 @@ vim.lsp.config('volar', {
 
 -- Omnisharp
 vim.lsp.config('omnisharp', {
-	use_mono = string.find(vim.fn.getcwd(), "GEO_ESB") ~= nil, -- Only use mono in the Pozzo project
+	--use_mono = string.find(vim.fn.getcwd(), "GEO_ESB") ~= nil, -- Only use mono in the Pozzo project
+	use_mono = true,
 	sdk_include_prereleases = false,
 	capabilities = cmp_capabilities,
 })
