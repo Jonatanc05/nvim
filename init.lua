@@ -59,6 +59,48 @@ require("lazy").setup( {
   "williamboman/mason-lspconfig.nvim",
   { "hrsh7th/nvim-cmp", dependencies = { "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "hrsh7th/cmp-cmdline" }},
   "Exafunction/codeium.vim",
+
+--  {
+--    "yetone/avante.nvim",
+--    event = "VeryLazy",
+--    version = false, -- Never set this value to "*"! Never!
+--    opts = {
+--      provider = "openai",
+--      providers = {
+--        openai = {
+--          endpoint = "https://api.openai.com/v1",
+--          model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
+--          extra_request_body = {
+--            timeout = 30000, -- Timeout in milliseconds, increase this for reasoning models
+--            temperature = 0.75,
+--            max_completion_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
+--            --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+--          },
+--        },
+--      },
+--	  },
+--	  -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+--	  build = windows and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" or "make"
+--	  dependencies = {
+--      "nvim-treesitter/nvim-treesitter",
+--      "nvim-lua/plenary.nvim",
+--      "MunifTanjim/nui.nvim",
+--      --- The below dependencies are optional,
+--      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+--      "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
+--      --"stevearc/dressing.nvim", -- for input provider dressing
+--      "folke/snacks.nvim", -- for input provider snacks
+--      "nvim-tree/nvim-web-devicons",
+--      {
+--        -- Make sure to set this up properly if you have lazy=true
+--        'MeanderingProgrammer/render-markdown.nvim',
+--        opts = {
+--          file_types = { "markdown", "Avante" },
+--        },
+--        ft = { "markdown", "Avante" },
+--      },
+--	  },
+--	}
 })
 local cmp_plugin = require'cmp'
 
@@ -136,6 +178,7 @@ vim.api.nvim_set_keymap('n', "g(", ":tabmove -1<CR>", {})
 vim.api.nvim_set_keymap('v', "<leader>q", ":norm i//<CR>", {})
 vim.api.nvim_create_user_command("Tab2", "set tabstop=2 shiftwidth=2 expandtab", {})
 vim.api.nvim_create_user_command("Tab4", "set tabstop=4 shiftwidth=4 noexpandtab", {})
+vim.api.nvim_set_keymap('n', "<C-t>", ":tabe | term<CR>:tabmove -1<CR>", {})
 
 -- Plugin_mappings
 vim.api.nvim_set_keymap("n", "<leader>fd", ":Telescope find_files<CR>", {})
@@ -159,7 +202,7 @@ vim.api.nvim_set_keymap("n", "gr",        "<cmd>lua vim.lsp.buf.references()<CR>
 vim.api.nvim_set_keymap("n", "g[",        "<cmd>lua vim.diagnostic.goto_prev()<CR>", {})
 vim.api.nvim_set_keymap("n", "g]",        "<cmd>lua vim.diagnostic.goto_next()<CR>", {})
 vim.api.nvim_set_keymap("n", "<C-.>",    "<cmd>lua vim.lsp.buf.code_action()<CR>", {})
-vim.api.nvim_set_keymap("n", "<leader>d", "<cmd>lua vim.diagnostic.open_float()<CR>", {})
+--vim.api.nvim_set_keymap("n", "<leader>d", "<cmd>lua vim.diagnostic.open_float()<CR>", {})
 vim.api.nvim_set_keymap("n", "]f", "/{<CR>%jzz", {noremap = true, silent = true})
 vim.api.nvim_set_keymap("n", "[f", "?}<CR>%kzz", {noremap = true, silent = true})
 
