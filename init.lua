@@ -188,7 +188,7 @@ vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", {})
 vim.api.nvim_set_keymap('n', "<C-g>", ":0Gclog<CR>", {})
 vim.api.nvim_set_keymap('n', "<Tab>", ":WintabsNext<CR>", {})
 vim.api.nvim_set_keymap('n', "<S-Tab>", ":WintabsPrevious<CR>", {})
-vim.api.nvim_set_keymap('n', "<leader>d", ":WintabsClose<CR>", {})
+vim.api.nvim_set_keymap('n', "<leader>q", ":WintabsClose<CR>", {})
 
 -- LSP_mappings
 vim.api.nvim_set_keymap("n", "K",         "<cmd>lua vim.lsp.buf.hover()<CR>", {})
@@ -202,7 +202,7 @@ vim.api.nvim_set_keymap("n", "gr",        "<cmd>lua vim.lsp.buf.references()<CR>
 vim.api.nvim_set_keymap("n", "g[",        "<cmd>lua vim.diagnostic.goto_prev()<CR>", {})
 vim.api.nvim_set_keymap("n", "g]",        "<cmd>lua vim.diagnostic.goto_next()<CR>", {})
 vim.api.nvim_set_keymap("n", "<C-.>",    "<cmd>lua vim.lsp.buf.code_action()<CR>", {})
---vim.api.nvim_set_keymap("n", "<leader>d", "<cmd>lua vim.diagnostic.open_float()<CR>", {})
+vim.api.nvim_set_keymap("n", "<leader>d", "<cmd>lua vim.diagnostic.open_float()<CR>", {})
 vim.api.nvim_set_keymap("n", "]f", "/{<CR>%jzz", {noremap = true, silent = true})
 vim.api.nvim_set_keymap("n", "[f", "?}<CR>%kzz", {noremap = true, silent = true})
 
