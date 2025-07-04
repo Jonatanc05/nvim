@@ -15,18 +15,19 @@
 -------- Global_and_helper_stuff --------
 local data_path = vim.fn.stdpath('data')
 windows = jit and jit.os == 'Windows'
+require('claude-ref').setup()
 
 local function add_to_path(new_path)
-	local path = os.getenv("PATH")
-	local path_sep = package.config:sub(1,1) == '\\' and ';' or ':'
-	if not string.find(path, new_path, 1, true) then
-		path = new_path .. path_sep .. path
-		if windows then
-			os.execute('setx PATH "' .. path .. '"')
-		else
-			os.execute('export PATH="' .. path .. '"')
-		end
-	end
+  local path = os.getenv("PATH")
+  local path_sep = package.config:sub(1,1) == '\\' and ';' or ':'
+  if not string.find(path, new_path, 1, true) then
+    path = new_path .. path_sep .. path
+    if windows then
+      os.execute('setx PATH "' .. path .. '"')
+    else
+      os.execute('export PATH="' .. path .. '"')
+    end
+  end
 end
 
 ------- Install_packer_and_plugins -------
@@ -41,22 +42,28 @@ require("lazy").setup( {
   "folke/lazy.nvim",
   { "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" } },
   "mhinz/vim-startify",
-  "derekwyatt/vim-fswitch",						-- Switch header-source file (c++)
-  "dikiaap/minimalist",							-- Colorscheme
---	"embark-theme/vim'							-- Colorscheme
+  "derekwyatt/vim-fswitch",            -- Switch header-source file (c++)
+  "dikiaap/minimalist",              -- Colorscheme
+--  "embark-theme/vim'              -- Colorscheme
   { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   "airblade/vim-rooter",
-  "tpope/vim-fugitive",							-- Git controls
-  "mhinz/vim-signify",							-- Git signs on sidebar
+  "tpope/vim-fugitive",              -- Git controls
+  "mhinz/vim-signify",              -- Git signs on sidebar
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
---	"nvim-treesitter/nvim-treesitter-textobjects"			-- Create motions for functions
+--  "nvim-treesitter/nvim-treesitter-textobjects"      -- Create motions for functions
 
   "zefei/vim-wintabs",
 
   -- LSP and completion
   "neovim/nvim-lspconfig",
   "williamboman/mason.nvim",
-  "williamboman/mason-lspconfig.nvim",
+  {
+    "williamboman/mason-lspconfig.nvim",
+    dependencies = { "mason-org/mason.nvim", "neovim/nvim-lspconfig", },
+    opts = {
+      automatic_enable = { exclude = { "omnisharp-mono", }, },
+    },
+  },
   { "hrsh7th/nvim-cmp", dependencies = { "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "hrsh7th/cmp-cmdline" }},
   "Exafunction/codeium.vim",
 
@@ -78,10 +85,10 @@ require("lazy").setup( {
 --          },
 --        },
 --      },
---	  },
---	  -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
---	  build = windows and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" or "make"
---	  dependencies = {
+--    },
+--    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+--    build = windows and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" or "make"
+--    dependencies = {
 --      "nvim-treesitter/nvim-treesitter",
 --      "nvim-lua/plenary.nvim",
 --      "MunifTanjim/nui.nvim",
@@ -99,8 +106,8 @@ require("lazy").setup( {
 --        },
 --        ft = { "markdown", "Avante" },
 --      },
---	  },
---	}
+--    },
+--  }
 })
 local cmp_plugin = require'cmp'
 
@@ -185,7 +192,7 @@ vim.api.nvim_set_keymap("n", "<leader>fd", ":Telescope find_files<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>fg", ":Telescope live_grep<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>fb", ":Telescope buffers<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", {})
-vim.api.nvim_set_keymap('n', "<C-g>", ":0Gclog<CR>", {})
+vim.api.nvim_set_keymap('n', "<C-g>", ":0Gclog<CR>", { noremap = true })
 vim.api.nvim_set_keymap('n', "<Tab>", ":WintabsNext<CR>", {})
 vim.api.nvim_set_keymap('n', "<S-Tab>", ":WintabsPrevious<CR>", {})
 vim.api.nvim_set_keymap('n', "<leader>q", ":WintabsClose<CR>", {})
@@ -209,12 +216,12 @@ vim.api.nvim_set_keymap("n", "[f", "?}<CR>%kzz", {noremap = true, silent = true}
 
 -- Completion_mappings
 completion_mappings = {
-	['<C-b>']     = cmp_plugin.mapping.scroll_docs(-4),
-	['<C-f>']     = cmp_plugin.mapping.scroll_docs(4),
-	['<C-Space>'] = cmp_plugin.mapping.complete(),
-	['<C-e>']     = cmp_plugin.mapping.abort(),
---	['<Tab>']     = cmp_plugin.mapping.confirm({ select = true }),
-	['<CR>']      = cmp_plugin.mapping.confirm({ select = false }),
+  ['<C-b>']     = cmp_plugin.mapping.scroll_docs(-4),
+  ['<C-f>']     = cmp_plugin.mapping.scroll_docs(4),
+  ['<C-Space>'] = cmp_plugin.mapping.complete(),
+  ['<C-e>']     = cmp_plugin.mapping.abort(),
+--  ['<Tab>']     = cmp_plugin.mapping.confirm({ select = true }),
+  ['<CR>']      = cmp_plugin.mapping.confirm({ select = false }),
 }
 
 
@@ -229,7 +236,7 @@ vim.cmd('source ' .. init_path .. '/old-init.vim')
 vim.cmd('source ' .. init_path .. '/plug-config.vim')
 vim.cmd([[
 let g:startify_bookmarks = [
-	\ { 'i': ']] .. init_path .. [[/init.lua' },
+  \ { 'i': ']] .. init_path .. [[/init.lua' },
 \ ]
 
 " Minimalist coloscheme adjusts
@@ -248,21 +255,21 @@ hi StorageClass ctermfg=140 ctermbg=NONE cterm=NONE guifg=#AF87D7 guibg=NONE    
 -------------- Treesitter --------------
 
 if windows then
-	require 'nvim-treesitter.install'.compilers = { "clang" }
+  require 'nvim-treesitter.install'.compilers = { "clang" }
 end
 
 local configs = require'nvim-treesitter.configs'
 configs.setup {
-	ensure_installed = {
-		"c_sharp", "c", "cpp", "diff", "lua", "javascript", "css",
-		"html", "markdown", "vue", "typescript", "json", "yaml", "zig"
-	},
-	highlight = {
-		enable = true,
-	},
-	indent = {
-		enable = false,
-	}
+  ensure_installed = {
+    "c_sharp", "c", "cpp", "diff", "lua", "javascript", "css",
+    "html", "markdown", "vue", "typescript", "json", "yaml", "zig"
+  },
+  highlight = {
+    enable = true,
+  },
+  indent = {
+    enable = false,
+  }
 }
 
 
@@ -276,18 +283,18 @@ vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 
 require'nvim-tree'.setup({
-	sort_by = "case_sensitive",
-	view = {
-		adaptive_size = true,
-	},
-	update_focused_file = {
-		enable = true,
-		update_root = false,
-		ignore_list = {},
-	},
-	renderer = {
-		group_empty = true,
-	}
+  sort_by = "case_sensitive",
+  view = {
+    adaptive_size = true,
+  },
+  update_focused_file = {
+    enable = true,
+    update_root = false,
+    ignore_list = {},
+  },
+  renderer = {
+    group_empty = true,
+  }
 })
 
 
@@ -304,15 +311,15 @@ require('mason-lspconfig').setup()
 
 -- Completion
 cmp_plugin.setup({
-	window = {
-		completion = cmp_plugin.config.window.bordered(),
-		documentation = cmp_plugin.config.window.bordered(),
-	},
-	mapping = cmp_plugin.mapping.preset.insert(completion_mappings),
-	sources = cmp_plugin.config.sources(
-		{{ name = 'nvim_lsp' }},
-		{{ name = 'buffer' }}
-	)
+  window = {
+    completion = cmp_plugin.config.window.bordered(),
+    documentation = cmp_plugin.config.window.bordered(),
+  },
+  mapping = cmp_plugin.mapping.preset.insert(completion_mappings),
+  sources = cmp_plugin.config.sources(
+    {{ name = 'nvim_lsp' }},
+    {{ name = 'buffer' }}
+  )
 })
 local cmp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 cmp_capabilities.textDocument.completion.completionItem.snippetSupport = false -- nao tenho certeza se funciona
@@ -322,29 +329,29 @@ local lspconfig = require'lspconfig'
 
 -- Volar
 vim.lsp.config('volar', {
-	cmd = {data_path .. '\\mason\\packages\\vue-language-server\\node_modules\\.bin\\vue-language-server.cmd', '--stdio'},
-	filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
-	init_options = { typescript = { tsdk = data_path .. '/mason/packages/vue-language-server/node_modules/typescript/lib' } },
-	capabilities = cmp_capabilities
+  cmd = {data_path .. '\\mason\\packages\\vue-language-server\\node_modules\\.bin\\vue-language-server.cmd', '--stdio'},
+  filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
+  init_options = { typescript = { tsdk = data_path .. '/mason/packages/vue-language-server/node_modules/typescript/lib' } },
+  capabilities = cmp_capabilities
 })
 
 -- Omnisharp
 vim.lsp.config('omnisharp', {
-	--use_mono = string.find(vim.fn.getcwd(), "GEO_ESB") ~= nil, -- Only use mono in the Pozzo project
-	use_mono = true,
-	sdk_include_prereleases = false,
-	capabilities = cmp_capabilities,
+  --use_mono = string.find(vim.fn.getcwd(), "GEO_ESB") ~= nil, -- Only use mono in the Pozzo project
+  use_mono = true,
+  sdk_include_prereleases = false,
+  capabilities = cmp_capabilities,
 })
 
 -- Clangd
 vim.lsp.config('clangd', {
-	capabilities = cmp_capabilities,
+  capabilities = cmp_capabilities,
 })
 
 -- Zig
 vim.lsp.config('zls', {
-	cmd = { data_path .. '\\mason\\bin\\zls.cmd' },
-	capabilities = cmp_capabilities,
-	enableBuildOnSave = true,
+  cmd = { data_path .. '\\mason\\bin\\zls.cmd' },
+  capabilities = cmp_capabilities,
+  enableBuildOnSave = true,
 })
 
