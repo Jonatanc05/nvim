@@ -15,7 +15,6 @@
 -------- Global_and_helper_stuff --------
 local data_path = vim.fn.stdpath('data')
 windows = jit and jit.os == 'Windows'
-require('claude-ref').setup()
 
 local function add_to_path(new_path)
   local path = os.getenv("PATH")
@@ -186,6 +185,27 @@ vim.api.nvim_set_keymap('v', "<leader>q", ":norm i//<CR>", {})
 vim.api.nvim_create_user_command("Tab2", "set tabstop=2 shiftwidth=2 expandtab", {})
 vim.api.nvim_create_user_command("Tab4", "set tabstop=4 shiftwidth=4 noexpandtab", {})
 vim.api.nvim_set_keymap('n', "<C-t>", ":tabe | term<CR>:tabmove -1<CR>", {})
+vim.api.nvim_set_keymap('v', '<leader>c', '', { desc = 'Copy file reference for Claude Code', callback = function()
+  local start_line = vim.fn.line('v')  -- Start of visual selection
+  local end_line = vim.fn.line('.')    -- Current cursor position
+  if start_line > end_line then
+    start_line, end_line = end_line, start_line
+  end
+  local file_path = vim.fn.expand('%:.')
+  local reference
+  if start_line == end_line then
+    reference = string.format("%s:%d", file_path, start_line)
+  else
+    reference = string.format("%s:%d-%d", file_path, start_line, end_line)
+  end
+  vim.fn.setreg('+', reference)
+  print("Copied: " .. reference)
+end })
+vim.keymap.set('n', '<leader>c', function()
+  local reference = string.format("%s:%d", vim.fn.expand('%:.'), vim.fn.line('.'))
+  vim.fn.setreg('+', reference)
+  print("Copied: " .. reference)
+end, { desc = 'Copy current line reference for Claude Code' })
 
 -- Plugin_mappings
 vim.api.nvim_set_keymap("n", "<leader>fd", ":Telescope find_files<CR>", {})
