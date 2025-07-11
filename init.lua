@@ -106,22 +106,20 @@ require("lazy").setup( {
     "nvim-tree/nvim-tree.lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     cmd = "NvimTreeToggle",
-    --keys = { "<leader>t" },
-    config = function() nvimtree_config() end,
+    config = nvimtree_config,
   },
 
   {
     "nvim-telescope/telescope.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     cmd = "Telescope",
-    --keys = { "<leader>fd", "<leader>fg", },
   },
 
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },  -- Load on file open
-    config = function() treesitter_config() end,
+    config = treesitter_config,
   },
 
   {
