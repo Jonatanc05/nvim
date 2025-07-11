@@ -1,16 +1,17 @@
 -------- INDEX --------
-
--- Global_and_helper_stuff
--- Install_packer_and_plugins
--- General
--- Key_Maps
---     Plugin_mappings
---     LSP_mappings
---     Completion_mappings
--- Legacy_stuff
--- Treesitter
--- Setup_Neovim_Tree
--- Setup_completion_and_builtin_LSPs
+--[[
+Global_and_helper_stuff
+Treesitter
+Nvimtree
+Install_packer_and_plugins
+General
+Key_Maps
+    Plugin_mappings
+    LSP_mappings
+    Completion_mappings
+Legacy_stuff
+Completion_and_builtin_LSPs
+]]
 
 -------- Global_and_helper_stuff --------
 local data_path = vim.fn.stdpath('data')
@@ -29,6 +30,61 @@ local function add_to_path(new_path)
   end
 end
 
+
+
+
+
+
+-------------- Treesitter --------------
+
+local function treesitter_config()
+  if windows then
+    require 'nvim-treesitter.install'.compilers = { "clang" }
+  end
+
+  local configs = require'nvim-treesitter.configs'
+  configs.setup {
+    ensure_installed = {
+      "c_sharp", "c", "cpp", "diff", "lua", "javascript", "css",
+      "html", "markdown", "vue", "typescript", "json", "yaml", "zig"
+    },
+    highlight = { enable = true, },
+    indent = { enable = false, }
+  }
+end
+
+
+
+
+
+------------- Nvimtree -------------
+local function nvimtree_config()
+  vim.g.loaded_netrw = 1
+  vim.g.loaded_netrwPlugin = 1
+  vim.opt.termguicolors = true
+
+  require'nvim-tree'.setup({
+    sort_by = "case_sensitive",
+    view = {
+      adaptive_size = true,
+    },
+    update_focused_file = {
+      enable = true,
+      update_root = false,
+      ignore_list = {},
+    },
+    renderer = {
+      group_empty = true,
+    }
+  })
+end
+
+
+
+
+
+
+
 ------- Install_packer_and_plugins -------
 
 local lazypath = data_path .. "/lazy/lazy.nvim"
@@ -39,74 +95,43 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup( {
   "folke/lazy.nvim",
-  { "nvim-tree/nvim-tree.lua", dependencies = { "nvim-tree/nvim-web-devicons" } },
-  "mhinz/vim-startify",
-  "derekwyatt/vim-fswitch",            -- Switch header-source file (c++)
-  "dikiaap/minimalist",              -- Colorscheme
---  "embark-theme/vim'              -- Colorscheme
-  { "nvim-telescope/telescope.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   "airblade/vim-rooter",
-  "tpope/vim-fugitive",              -- Git controls
-  "mhinz/vim-signify",              -- Git signs on sidebar
-  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
---  "nvim-treesitter/nvim-treesitter-textobjects"      -- Create motions for functions
-
+  "tpope/vim-fugitive",
+  "mhinz/vim-signify",
   "zefei/vim-wintabs",
+  { "dikiaap/minimalist", priority = 90, },
+  { "mhinz/vim-startify", priority = 80, },
 
-  -- LSP and completion
-  "neovim/nvim-lspconfig",
-  "williamboman/mason.nvim",
+  {
+    "nvim-tree/nvim-tree.lua",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    cmd = "NvimTreeToggle",
+    --keys = { "<leader>t" },
+    config = function() nvimtree_config() end,
+  },
+
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    cmd = "Telescope",
+    --keys = { "<leader>fd", "<leader>fg", },
+  },
+
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    event = { "BufReadPost", "BufNewFile" },  -- Load on file open
+    config = function() treesitter_config() end,
+  },
+
   {
     "williamboman/mason-lspconfig.nvim",
-    dependencies = { "mason-org/mason.nvim", "neovim/nvim-lspconfig", },
+    dependencies = { "neovim/nvim-lspconfig", "williamboman/mason.nvim", "neovim/nvim-lspconfig", "hrsh7th/nvim-cmp", "hrsh7th/cmp-nvim-lsp", --[["hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "hrsh7th/cmp-cmdline"]]},
     opts = {
       automatic_enable = { exclude = { "omnisharp-mono", }, },
     },
   },
-  { "hrsh7th/nvim-cmp", dependencies = { "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "hrsh7th/cmp-cmdline" }},
-  "Exafunction/codeium.vim",
 
---  {
---    "yetone/avante.nvim",
---    event = "VeryLazy",
---    version = false, -- Never set this value to "*"! Never!
---    opts = {
---      provider = "openai",
---      providers = {
---        openai = {
---          endpoint = "https://api.openai.com/v1",
---          model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
---          extra_request_body = {
---            timeout = 30000, -- Timeout in milliseconds, increase this for reasoning models
---            temperature = 0.75,
---            max_completion_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
---            --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
---          },
---        },
---      },
---    },
---    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
---    build = windows and "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" or "make"
---    dependencies = {
---      "nvim-treesitter/nvim-treesitter",
---      "nvim-lua/plenary.nvim",
---      "MunifTanjim/nui.nvim",
---      --- The below dependencies are optional,
---      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
---      "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
---      --"stevearc/dressing.nvim", -- for input provider dressing
---      "folke/snacks.nvim", -- for input provider snacks
---      "nvim-tree/nvim-web-devicons",
---      {
---        -- Make sure to set this up properly if you have lazy=true
---        'MeanderingProgrammer/render-markdown.nvim',
---        opts = {
---          file_types = { "markdown", "Avante" },
---        },
---        ft = { "markdown", "Avante" },
---      },
---    },
---  }
 })
 local cmp_plugin = require'cmp'
 
@@ -212,7 +237,7 @@ vim.api.nvim_set_keymap("n", "<leader>fd", ":Telescope find_files<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>fg", ":Telescope live_grep<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>fb", ":Telescope buffers<CR>", {})
 vim.api.nvim_set_keymap("n", "<leader>t", ":NvimTreeToggle<CR>", {})
-vim.api.nvim_set_keymap('n', "<C-g>", ":0Gclog<CR>", { noremap = true })
+vim.api.nvim_set_keymap('n', "<C-g>", ":0Gclog<CR>", {})
 vim.api.nvim_set_keymap('n', "<Tab>", ":WintabsNext<CR>", {})
 vim.api.nvim_set_keymap('n', "<S-Tab>", ":WintabsPrevious<CR>", {})
 vim.api.nvim_set_keymap('n', "<leader>q", ":WintabsClose<CR>", {})
@@ -224,7 +249,7 @@ vim.api.nvim_set_keymap("n", "gD",        "<cmd>lua vim.lsp.buf.definition()<CR>
 vim.api.nvim_set_keymap("n", "gd",        ":vsp<CR><cmd>lua vim.lsp.buf.definition()<CR>", {})
 vim.api.nvim_set_keymap("n", "gs",        "<cmd>lua vim.lsp.buf.definition()<CR>", {})
 vim.api.nvim_set_keymap("n", "gc",        ":sp<CR><cmd>lua vim.lsp.buf.definition()<CR>", {})
-vim.api.nvim_set_keymap("n", "gi",        ":vsp<CR><cmd>lua vim.lsp.buf.implementation()<CR>", {})
+vim.api.nvim_set_keymap("n", "gi",        "<cmd>lua vim.lsp.buf.implementation()<CR>", {})
 vim.api.nvim_set_keymap("n", "gr",        "<cmd>lua vim.lsp.buf.references()<CR>", {})
 vim.api.nvim_set_keymap("n", "g[",        "<cmd>lua vim.diagnostic.goto_prev()<CR>", {})
 vim.api.nvim_set_keymap("n", "g]",        "<cmd>lua vim.diagnostic.goto_next()<CR>", {})
@@ -252,12 +277,44 @@ completion_mappings = {
 
 local init_path = vim.fn.stdpath('config')
 
-vim.cmd('source ' .. init_path .. '/old-init.vim')
-vim.cmd('source ' .. init_path .. '/plug-config.vim')
 vim.cmd([[
+
+" Highlight whitespaces at end of line
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+au BufWinEnter * match ExtraWhitespace /\s\+$/
+au InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+au InsertLeave * match ExtraWhitespace /\s\+$/
+au BufWinLeave * call clearmatches()
+
+" Configure timoutlen for jk in non-normal modes
+au InsertEnter * set timeoutlen=170
+au InsertLeave * set timeoutlen=1000
+nnoremap <silent> <script> v :set timeoutlen=100<CR>v
+nnoremap <silent> <script> V :set timeoutlen=100<CR>V
+nnoremap <silent> <script> <C-v> :set timeoutlen=100<CR><C-v>
+
+" Use matchit plugin to fold #region statements
+packadd! matchit
+au BufWinEnter * let b:match_words = '\s*#\s*region.*$:\s*#\s*endregion'
+
+" Startify
+let g:startify_custom_header = startify#fortune#boxed()
+let g:startify_lists = [
+	\ { 'type': 'sessions',  'header': ['	Sessoes Salvas'] },
+	\ { 'type': 'files', 	 'header': ['	Arquivos Recentes'] },
+	\ { 'type': 'bookmarks', 'header': ['	Bookmarks'] }
+\ ]
+"let g:startify_fortune_use_unicode = 1
 let g:startify_bookmarks = [
   \ { 'i': ']] .. init_path .. [[/init.lua' },
 \ ]
+
+" Signify
+let g:signify_sign_add               = '+'
+let g:signify_sign_delete            = '_'
+let g:signify_sign_delete_first_line = '‾'
+let g:signify_sign_change            = '~'
 
 " Minimalist coloscheme adjusts
 hi String         ctermfg=1                            guifg=#D6BF9C
@@ -272,58 +329,7 @@ hi StorageClass ctermfg=140 ctermbg=NONE cterm=NONE guifg=#AF87D7 guibg=NONE    
 
 
 
--------------- Treesitter --------------
-
-if windows then
-  require 'nvim-treesitter.install'.compilers = { "clang" }
-end
-
-local configs = require'nvim-treesitter.configs'
-configs.setup {
-  ensure_installed = {
-    "c_sharp", "c", "cpp", "diff", "lua", "javascript", "css",
-    "html", "markdown", "vue", "typescript", "json", "yaml", "zig"
-  },
-  highlight = {
-    enable = true,
-  },
-  indent = {
-    enable = false,
-  }
-}
-
-
-
-
-
-
-------------- Setup_Neovim_Tree -------------
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-vim.opt.termguicolors = true
-
-require'nvim-tree'.setup({
-  sort_by = "case_sensitive",
-  view = {
-    adaptive_size = true,
-  },
-  update_focused_file = {
-    enable = true,
-    update_root = false,
-    ignore_list = {},
-  },
-  renderer = {
-    group_empty = true,
-  }
-})
-
-
-
-
-
-
-
------- Setup_completion_and_builtin_LSPs ------
+------ Completion_and_builtin_LSPs ------
 
 -- Mason LSP Installer
 require('mason').setup()
