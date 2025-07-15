@@ -125,9 +125,6 @@ require("lazy").setup( {
   {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { "neovim/nvim-lspconfig", "williamboman/mason.nvim", "neovim/nvim-lspconfig", "hrsh7th/nvim-cmp", "hrsh7th/cmp-nvim-lsp", --[["hrsh7th/cmp-buffer", "hrsh7th/cmp-path", "hrsh7th/cmp-cmdline"]]},
-    opts = {
-      automatic_enable = { exclude = { "omnisharp-mono", }, },
-    },
   },
 
 })
@@ -331,7 +328,9 @@ hi StorageClass ctermfg=140 ctermbg=NONE cterm=NONE guifg=#AF87D7 guibg=NONE    
 
 -- Mason LSP Installer
 require('mason').setup()
-require('mason-lspconfig').setup()
+require('mason-lspconfig').setup({
+	automatic_enable = { exclude = { "omnisharp-mono" } },
+})
 
 -- Completion
 cmp_plugin.setup({
