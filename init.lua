@@ -42,15 +42,14 @@ local function treesitter_config()
     require 'nvim-treesitter.install'.compilers = { "clang" }
   end
 
-  local configs = require'nvim-treesitter.configs'
-  configs.setup {
+  local configs = require'nvim-treesitter.configs'.setup({
     ensure_installed = {
       "c_sharp", "c", "cpp", "diff", "lua", "javascript", "css",
       "html", "markdown", "vue", "typescript", "json", "yaml", "zig"
     },
     highlight = { enable = true, },
     indent = { enable = false, }
-  }
+  })
 end
 
 
@@ -63,8 +62,19 @@ local function nvimtree_config()
   vim.g.loaded_netrwPlugin = 1
   vim.opt.termguicolors = true
 
+  local function nvimtree_on_attach(bufnr)
+    local api = require("nvim-tree.api")
+    local function opts(desc)
+      return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+    end
+
+    api.config.mappings.default_on_attach(bufnr)
+    vim.keymap.set("n", "", api.tree.change_root_to_node,          opts("CD (Ctrl+])"))
+  end
+
   require'nvim-tree'.setup({
     sort_by = "case_sensitive",
+    on_attach = nvimtree_on_attach,
     view = {
       adaptive_size = true,
     },
@@ -226,6 +236,7 @@ vim.keymap.set('n', '<leader>c', function()
   vim.fn.setreg('+', reference)
   print("Copied: " .. reference)
 end, { desc = 'Copy current line reference for Claude Code' })
+vim.api.nvim_set_keymap("t", "<S-CR>", "<CR>jkk", {})
 
 -- Plugin_mappings
 vim.api.nvim_set_keymap("n", "<leader>fd", ":Telescope find_files<CR>", {})
@@ -351,7 +362,7 @@ cmp_capabilities.textDocument.completion.completionItem.snippetSupport = false -
 local lspconfig = require'lspconfig'
 
 -- Volar
-vim.lsp.config('volar', {
+vim.lsp.config('vue-language-server', {
   cmd = {data_path .. '\\mason\\packages\\vue-language-server\\node_modules\\.bin\\vue-language-server.cmd', '--stdio'},
   filetypes = {'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json'},
   init_options = { typescript = { tsdk = data_path .. '/mason/packages/vue-language-server/node_modules/typescript/lib' } },
@@ -360,9 +371,42 @@ vim.lsp.config('volar', {
 
 -- Omnisharp
 vim.lsp.config('omnisharp', {
-  --use_mono = string.find(vim.fn.getcwd(), "GEO_ESB") ~= nil, -- Only use mono in the Pozzo project
-  use_mono = true,
-  sdk_include_prereleases = false,
+  on_error = function(code, err)
+    return
+    --local client_errors = require('vim.lsp.rpc').client_errors
+    --if code == client_errors.INVALID_SERVER_JSON then
+    --  return
+    --else
+    --  error(err)
+    --end
+  end,
+  settings = {
+    MsBuild = {
+      -- If true, MSBuild project system will only load projects for files that
+      -- were opened in the editor. This setting is useful for big C# codebases
+      -- and allows for faster initialization of code navigation features only
+      -- for projects that are relevant to code that is being edited. With this
+      -- setting enabled OmniSharp may load fewer projects and may thus display
+      -- incomplete reference lists for symbols.
+      LoadProjectsOnDemand = true,
+    },
+    RoslynExtensionsOptions = {
+      -- Enables support for showing unimported types and unimported extension
+      -- methods in completion lists. When committed, the appropriate using
+      -- directive will be added at the top of the current file. This option can
+      -- have a negative impact on initial completion responsiveness,
+      -- particularly for the first few completion sessions after opening a
+      -- solution.
+      EnableImportCompletion = nil,
+      -- Enables the possibility to see the code in external nuget dependencies
+      EnableDecompilationSupport = nil,
+    },
+    Sdk = {
+      -- Specifies whether to include preview versions of the .NET SDK when
+      -- determining which version to use for project loading.
+      IncludePrereleases = false,
+    },
+  },
   capabilities = cmp_capabilities,
 })
 
@@ -376,5 +420,6 @@ vim.lsp.config('zls', {
   cmd = { data_path .. '\\mason\\bin\\zls.cmd' },
   capabilities = cmp_capabilities,
   enableBuildOnSave = true,
+  init_options = { zig_lib_path = vim.fn.expand('~/.version-fox/cache/zig/v-0.15.1/zig-0.15.1/lib/') },
 })
 
