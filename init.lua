@@ -103,6 +103,12 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local obsidian_vault_path
+if (windows) then
+  obsidian_vault_path = vim.fn.expand("~/Desktop/Pessoal/vault1/vault1")
+else
+  obsidian_vault_path = vim.fn.expand("~/vault1")
+end
 require("lazy").setup( {
   "folke/lazy.nvim",
   "airblade/vim-rooter",
@@ -123,6 +129,42 @@ require("lazy").setup( {
     "nvim-telescope/telescope.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     cmd = "Telescope",
+  },
+
+  {
+    "epwalsh/obsidian.nvim",
+    version = "*",  -- recommended, use latest release instead of latest commit
+    ft = "markdown",
+    -- event = {
+    --   "BufReadPre " .. vim.fn.expand(obsidian_vault_path .. '/') .. "*.md",
+    --   "BufNewFile " .. vim.fn.expand(obsidian_vault_path .. '/') .. "*.md",
+    -- },
+    dependencies = { "nvim-lua/plenary.nvim", "hrsh7th/nvim-cmp", "nvim-telescope/telescope.nvim" },
+    opts = {
+      workspaces = { { name = "personal", path = obsidian_vault_path } },
+      daily_notes = { folder = "daily/2025" },
+      notes_subdir = "zettelkasten/sea-of-notes",
+      attachments = { img_folder = "assets" },
+      mappings = {
+        ["<C-n>"] = {
+          action = function()
+            return ":ObsidianNewFromTemplate zettelkasten/sea-of-notes/"
+          end,
+          opts = { noremap = true, expr = true, buffer = true },
+        },
+        ["<C-p>"] = {
+          action = function()
+            return ":ObsidianPasteImg"
+          end,
+          opts = { noremap = true, expr = true, buffer = true },
+        },
+      },
+      templates = {
+        folder = "templates",
+        date_format = "%Y-%m-%d",
+      },
+      disable_frontmatter = true,
+    },
   },
 
   {
@@ -254,7 +296,7 @@ vim.api.nvim_set_keymap("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<CR>", {
 vim.api.nvim_set_keymap("n", "gD",        "<cmd>lua vim.lsp.buf.definition()<CR>", {})
 vim.api.nvim_set_keymap("n", "gd",        ":vsp<CR><cmd>lua vim.lsp.buf.definition()<CR>", {})
 vim.api.nvim_set_keymap("n", "gs",        "<cmd>lua vim.lsp.buf.definition()<CR>", {})
-vim.api.nvim_set_keymap("n", "gc",        ":sp<CR><cmd>lua vim.lsp.buf.definition()<CR>", {})
+vim.api.nvim_set_keymap("n", "gx",        ":sp<CR><cmd>lua vim.lsp.buf.definition()<CR>", {})
 vim.api.nvim_set_keymap("n", "gi",        "<cmd>lua vim.lsp.buf.implementation()<CR>", {})
 vim.api.nvim_set_keymap("n", "gr",        "<cmd>lua vim.lsp.buf.references()<CR>", {})
 vim.api.nvim_set_keymap("n", "g[",        "<cmd>lua vim.diagnostic.goto_prev()<CR>", {})
