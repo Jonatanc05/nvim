@@ -42,13 +42,9 @@ local function treesitter_config()
     require 'nvim-treesitter.install'.compilers = { "clang" }
   end
 
-  local configs = require'nvim-treesitter.configs'.setup({
-    ensure_installed = {
-      "c_sharp", "c", "cpp", "diff", "lua", "javascript", "css",
-      "html", "markdown", "vue", "typescript", "json", "yaml", "zig"
-    },
-    highlight = { enable = true, },
-    indent = { enable = false, }
+  require'nvim-treesitter'.install({
+    "c_sharp", "c", "cpp", "diff", "lua", "javascript", "css",
+    "html", "markdown", "vue", "typescript", "json", "yaml", "zig"
   })
 end
 
