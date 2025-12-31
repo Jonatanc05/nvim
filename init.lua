@@ -5,6 +5,7 @@ Treesitter
 Nvimtree
 Install_packer_and_plugins
 General
+Custom_switchbuf_on_quickfixlist
 Key_Maps
     Plugin_mappings
     LSP_mappings
@@ -42,6 +43,7 @@ local function treesitter_config()
     require 'nvim-treesitter.install'.compilers = { "clang" }
   end
 
+  -- requires you to have the `tree-sitter-cli` package installed for some reason
   require'nvim-treesitter'.install({
     "c_sharp", "c", "cpp", "diff", "lua", "javascript", "css",
     "html", "markdown", "vue", "typescript", "json", "yaml", "zig"
@@ -103,7 +105,7 @@ local obsidian_vault_path
 if (windows) then
   obsidian_vault_path = vim.fn.expand("~/Desktop/Pessoal/vault1/vault1")
 else
-  obsidian_vault_path = vim.fn.expand("~/vault1")
+  obsidian_vault_path = vim.fn.expand("~/Documents/vault1")
 end
 require("lazy").setup( {
   "folke/lazy.nvim",
@@ -125,6 +127,18 @@ require("lazy").setup( {
     "nvim-telescope/telescope.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     cmd = "Telescope",
+    config = function()
+      local actions = require('telescope.actions')
+      require('telescope').setup({
+        defaults = {
+          mappings = {
+            i = {
+              ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+            },
+          },
+        },
+      })
+    end,
   },
 
   {
@@ -189,7 +203,7 @@ require("lazy").setup( {
 
 })
 local cmp_plugin = require'cmp'
-
+vim.g.rooter_patterns = {'.git', 'Makefile', '*.sln'}
 
 
 
@@ -215,7 +229,107 @@ vim.opt.splitbelow     = true
 vim.opt.splitright     = true
 vim.opt.compatible     = false
 vim.opt.relativenumber =  true
-vim.opt.switchbuf      = 'vsplit'
+-- vim.opt.switchbuf      = 'vsplit'
+
+
+
+
+
+------------ Custom_switchbuf_on_quickfixlist -----------
+-- Custom switchbuf behavior: useopen + vsplit hybrid
+-- this is all AI generated and used for quickfix navigation
+local function qf_navigate_hybrid(direction)
+  local qf_list = vim.fn.getqflist()
+  if #qf_list == 0 then return end
+
+  local current_idx = vim.fn.getqflist({idx = 0}).idx
+  local target_idx
+
+  if direction == "next" then
+    target_idx = current_idx < #qf_list and current_idx + 1 or 1
+  elseif direction == "prev" then
+    target_idx = current_idx > 1 and current_idx - 1 or #qf_list
+  elseif direction == "first" then
+    target_idx = 1
+  elseif direction == "last" then
+    target_idx = #qf_list
+  elseif type(direction) == "number" then
+    target_idx = direction
+  else
+    return
+  end
+
+  local item = qf_list[target_idx]
+
+  -- Get the target file path (handle both bufnr and filename)
+  local target_path
+  if item.bufnr ~= 0 then
+    target_path = vim.api.nvim_buf_get_name(item.bufnr)
+  else
+    target_path = vim.fn.fnamemodify(item.filename or '', ':p')
+  end
+
+  if target_path == '' then return end
+
+  -- Check if this file is already displayed in any window
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local win_buf = vim.api.nvim_win_get_buf(win)
+    local win_path = vim.api.nvim_buf_get_name(win_buf)
+
+    if win_path == target_path then
+      -- File found in this window, jump to it
+      vim.api.nvim_set_current_win(win)
+      vim.api.nvim_win_set_cursor(win, {item.lnum, math.max(0, item.col - 1)})
+      vim.cmd("normal! zz")
+      vim.fn.setqflist({}, 'a', {idx = target_idx})
+      return
+    end
+  end
+
+  -- File not open in any window, find a normal window and vsplit
+  local found_normal_win = false
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buftype = vim.bo[vim.api.nvim_win_get_buf(win)].buftype
+    if vim.api.nvim_win_get_config(win).relative == '' and buftype == '' then
+      vim.api.nvim_set_current_win(win)
+      found_normal_win = true
+      break
+    end
+  end
+
+  if found_normal_win then
+    vim.cmd("vsplit")
+    -- Open the file
+    if item.bufnr ~= 0 then
+      vim.cmd(string.format("buffer %d", item.bufnr))
+    else
+      vim.cmd(string.format("edit %s", vim.fn.fnameescape(target_path)))
+    end
+    vim.api.nvim_win_set_cursor(0, {item.lnum, math.max(0, item.col - 1)})
+    vim.cmd("normal! zz")
+    vim.fn.setqflist({}, 'a', {idx = target_idx})
+  end
+end
+
+-- Create custom commands
+vim.api.nvim_create_user_command("Cnext", function() qf_navigate_hybrid("next") end, {})
+vim.api.nvim_create_user_command("Cprev", function() qf_navigate_hybrid("prev") end, {})
+vim.api.nvim_create_user_command("Cfirst", function() qf_navigate_hybrid("first") end, {})
+vim.api.nvim_create_user_command("Clast", function() qf_navigate_hybrid("last") end, {})
+vim.api.nvim_create_user_command("Cc", function(opts)
+  qf_navigate_hybrid(tonumber(opts.args) or vim.fn.getqflist({idx = 0}).idx)
+end, {nargs = "?"})
+
+-- Override <CR> in quickfix window
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "qf",
+  callback = function()
+    vim.keymap.set("n", "<CR>", function()
+      local idx = vim.fn.line('.')
+      qf_navigate_hybrid(idx)
+    end, { buffer = true, desc = "Open quickfix entry with hybrid behavior" })
+  end,
+})
 
 
 
@@ -287,6 +401,9 @@ vim.keymap.set('n', '<leader>c', function()
   print("Copied: " .. reference)
 end, { desc = 'Copy current line reference for Claude Code' })
 vim.api.nvim_set_keymap("t", "<S-CR>", "<CR>jkk", {})
+vim.api.nvim_set_keymap("x", "C", "gc", {})
+vim.keymap.set("n", "]q", function() qf_navigate_hybrid("next") end, {desc = "Next quickfix"})
+vim.keymap.set("n", "[q", function() qf_navigate_hybrid("prev") end, {desc = "Prev quickfix"})
 
 -- Plugin_mappings
 vim.api.nvim_set_keymap("n", "<leader>fd", ":Telescope find_files<CR>", {})
@@ -303,6 +420,7 @@ vim.api.nvim_set_keymap("n", "K",         "<cmd>lua vim.lsp.buf.hover()<CR>", {}
 vim.api.nvim_set_keymap("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<CR>", {})
 vim.api.nvim_set_keymap("n", "gD",        "<cmd>lua vim.lsp.buf.definition()<CR>", {})
 vim.api.nvim_set_keymap("n", "gd",        ":vsp<CR><cmd>lua vim.lsp.buf.definition()<CR>", {})
+vim.api.nvim_set_keymap("n", "gw",        ":sp<CR><C-w><C-k><cmd>lua vim.lsp.buf.definition()<CR>", {})
 vim.api.nvim_set_keymap("n", "gs",        "<cmd>lua vim.lsp.buf.definition()<CR>", {})
 vim.api.nvim_set_keymap("n", "gx",        ":sp<CR><cmd>lua vim.lsp.buf.definition()<CR>", {})
 vim.api.nvim_set_keymap("n", "gi",        "<cmd>lua vim.lsp.buf.implementation()<CR>", {})
@@ -466,11 +584,16 @@ vim.lsp.config('clangd', {
 })
 
 -- Zig
+if windows then
+	zig_cmd = '\\mason\\bin\\zls.cmd'
+else
+	zig_cmd = '/mason/bin/zls'
+end
 vim.lsp.config('zls', {
-  cmd = { data_path .. '\\mason\\bin\\zls.cmd' },
+  cmd = { data_path .. zig_cmd },
   capabilities = cmp_capabilities,
   enableBuildOnSave = true,
-  init_options = { zig_lib_path = vim.fn.expand('~/.version-fox/cache/zig/v-0.15.1/zig-0.15.1/lib/') },
+  init_options = { zig_lib_path = vim.fn.expand('~/.version-fox/cache/zig/v-0.15.2/zig-0.15.2/lib/') },
 })
 
 vim.lsp.config('tsserver', {
