@@ -144,7 +144,7 @@ require("lazy").setup( {
       mappings = {
         ["<C-n>"] = {
           action = function()
-            return ":ObsidianNewFromTemplate zettelkasten/sea-of-notes/"
+            return ":ObsidianNew zettelkasten/sea-of-notes/"
           end,
           opts = { noremap = true, expr = true, buffer = true },
         },
@@ -153,6 +153,18 @@ require("lazy").setup( {
             return ":ObsidianPasteImg"
           end,
           opts = { noremap = true, expr = true, buffer = true },
+        },
+        ["<C-t>"] = {
+          action = function()
+            return "<cmd>ObsidianTemplate<CR>"
+          end,
+          opts = { noremap = true, expr = true, buffer = true },
+        },
+        ["gf"] = {
+          action = function()
+          return require("obsidian").util.gf_passthrough()
+          end,
+          opts = { noremap = false, expr = true, buffer = true },
         },
       },
       templates = {
@@ -461,3 +473,8 @@ vim.lsp.config('zls', {
   init_options = { zig_lib_path = vim.fn.expand('~/.version-fox/cache/zig/v-0.15.1/zig-0.15.1/lib/') },
 })
 
+vim.lsp.config('tsserver', {
+  init_options = {
+    maxTsServerMemory = 4096, -- MB
+  },
+})
