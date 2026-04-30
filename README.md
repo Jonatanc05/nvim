@@ -8,7 +8,7 @@ cd ~/.config/
 git clone https://github.com/Jonatanc05/nvim.git
 ```
 - Abra o Neovim (se necessário `:Lazy sync`)
-- Talvez seja necessário instalar o pacote `tree-sitter-cli` (útil em WSL)
+- Talvez seja necessário instalar o pacote `tree-sitter-cli`
 
 ### Windows
 
